@@ -1,0 +1,17 @@
+AllCops:
+  Include:
+    - config.ru
+  Exclude:
+    - db/**/*
+    - config/**/*
+    - script/**/*
+    - bin/**/*
+    - node_modules/**/*
+    - spec/*_helper.rb
+    - Gemfile
+Documentation:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
