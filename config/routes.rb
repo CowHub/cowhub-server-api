@@ -6,8 +6,16 @@ Rails.application.routes.draw do
   # Session management
   post '/user/authenticate', to: 'authentication#new_session'
 
+  # Cattle management
+  get 'cattle/:tag', to: 'cattle#index'
+  post 'cattle/new', to: 'cattle#new'
+  post 'cattle/update_cattle_info', to: 'cattle#update_cattle_info'
+  delete 'cattle/:tag', to: 'cattle#destroy'
+
+  # Health check
   get '/health', to: 'health#index'
   get '/health/login', to: 'health#login_placeholder'
 
   root to: redirect('//cloud-vm-46-70.doc.ic.ac.uk:80')
+
 end
