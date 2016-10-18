@@ -1,79 +1,93 @@
 require 'rails_helper'
 
 RSpec.describe CattleController, type: :controller do
-  describe 'GET #index' do
+  describe 'GET #show' do
     it 'get unregistered cattle returns http error' do
-      get :index, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(404)
-    end
-  end
-
-  describe 'POST #new' do
-    it 'register cattle (through tag) then retieve' do
-      post :new, params: { country_code: 'UK', herdmark: '230011',
-                           check_digit: '7', individual_number: '00002' }
-      expect(response).to have_http_status(201)
-
-      get :index, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(200)
+      get :show, params: { tag: 'UK230011700002' }
+      expect(response).to have_http_status(:not_found)
     end
 
-    it 'register twice same cattle returns http error' do
-      post :new, params: { country_code: 'UK', herdmark: '230011',
-                           check_digit: '7', individual_number: '00002' }
-      expect(response).to have_http_status(201)
-
-      post :new, params: { country_code: 'UK', herdmark: '230011',
-                           check_digit: '7', individual_number: '00002' }
-      expect(response).to have_http_status(400)
-    end
-  end
-
-  describe 'POST #update_cattle_info' do
-    it 'register cattle with information' do
-      post :update_cattle_info, params: {
-        tag: 'UK230011700002', name: 'Daisy', breed: 'Wagyu',
-        gender: 'female', dob: Date.today
-      }
-      expect(response).to have_http_status(200)
-
-      get :index, params: { tag: 'UK230011700002' }
+    it 'get registered cattle successfully returns cattle information' do
+      tag = Tag.create!(
+        country_code: 'UK', herdmark: '230011',
+        check_digit: '7', individual_number: '00002'
+      )
+      Cattle.find_by(tag_id: tag.id).update!(
+        name: 'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today
+      )
+      get :show, params: { tag: 'UK230011700002' }
+      expect(response).to have_http_status(:ok)
       expect(response.body).to eq({ cattle: { tag: 'UK230011700002', name:
         'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today } }.to_json)
     end
 
-    it 'update registered cattle information' do
-      post :new, params: { country_code: 'UK', herdmark: '230011',
-                           check_digit: '7', individual_number: '00002' }
-      expect(response).to have_http_status(201)
+    it 'get deleted cattle returns http error' do
+      Tag.create!(
+        country_code: 'UK', herdmark: '230011',
+        check_digit: '7', individual_number: '00002'
+      ).destroy
+      get :show, params: { tag: 'UK230011700002' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 
-      post :update_cattle_info, params: {
+  describe 'POST #new' do
+    it 'post registration of unregistered tags returns http success' do
+      post :new, params: {
+        country_code: 'UK', herdmark: '230011', check_digit: '7',
+        individual_number: '00002'
+      }
+      expect(response).to have_http_status(:created)
+    end
+
+    it 'post registration of already registered tags returns http error' do
+      post :new, params: {
+        country_code: 'UK', herdmark: '230011', check_digit: '7',
+        individual_number: '00002'
+      }
+      post :new, params: {
+        country_code: 'UK', herdmark: '230011', check_digit: '7',
+        individual_number: '00002'
+      }
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
+
+  describe 'POST #update' do
+    it 'post update to unregistered cattle registeres tag then updates cattle info before returning http success ' do
+      post :update, params: {
         tag: 'UK230011700002', name: 'Daisy', breed: 'Wagyu',
         gender: 'female', dob: Date.today
       }
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'post update to registered cattle updates info returns http success' do
+      Tag.create!(
+        country_code: 'UK', herdmark: '230011',
+        check_digit: '7', individual_number: '00002'
+      )
+      post :update, params: {
+        tag: 'UK230011700002', name: 'Daisy', breed: 'Wagyu',
+        gender: 'female', dob: Date.today
+      }
+      expect(response).to have_http_status(:ok)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'delete unregistered cattle returns http error' do
       delete :destroy, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(404)
+      expect(response).to have_http_status(:not_found)
     end
 
     it 'delete registered cattle returns http success' do
-      post :new, params: { country_code: 'UK', herdmark: '230011',
-                           check_digit: '7', individual_number: '00002' }
-      expect(response).to have_http_status(201)
-
-      get :index, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(200)
-
+      Tag.create!(
+        country_code: 'UK', herdmark: '230011',
+        check_digit: '7', individual_number: '00002'
+      )
       delete :destroy, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(200)
-
-      get :index, params: { tag: 'UK230011700002' }
-      expect(response).to have_http_status(404)
+      expect(response).to have_http_status(:ok)
     end
   end
 end

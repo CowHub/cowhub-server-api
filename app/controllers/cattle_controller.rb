@@ -1,50 +1,45 @@
 class CattleController < ApplicationController
   def index
+    render json: { cattle: Cattle.all.limit(50) }, status: :ok
+  end
+
+  def show
     tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_from_params(tag_params)
+    tag = Tag.find_by(tag_params)
     unless tag
-      puts tag
-      render json: {
-        error: 'Cattle is not registered'
-      }, status: 404 # Not Found
+      render json: { errors: ['Cattle is not registered'] }, status: :not_found
       return
     end
-    render json: {
-      cattle: Cattle.find_by(tag_id: tag.id).to_json
-    }, status: 200 # OK
+    cattle = Cattle.find_by(tag_id: tag.id)
+    render json: { cattle: cattle.to_json }, status: :ok
   end
 
   def new
-    if Tag.find_from_params(params)
-      render json: {
-        error: 'Tag already exists'
-      }, status: 400 # Bad Request
+    if Tag.find_by(params.permit(Tag.column_names))
+      render json: { errors: ['Tag already registered'] }, status: :bad_request
       return
     end
-    Tag.new_from_params(params)
-    render status: 201 # Created
+    tag = Tag.create(params.permit(Tag.column_names))
+    render json: { tag: tag }, status: :created
   end
 
-  def update_cattle_info
+  def update
     tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_from_params(tag_params)
-    tag = Tag.new_from_params(tag_params) if tag.nil?
+    tag = Tag.find_by(tag_params)
+    tag = Tag.create(tag_params) if tag.nil?
     cattle = Cattle.find_by(tag_id: tag.id)
-    cattle.update_attributes(params.permit(:name, :breed, :gender, :dob))
+    cattle.update_attributes(params.permit(Cattle.column_names))
     render status: 200 # OK
   end
 
   def destroy
     tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_from_params(tag_params)
+    tag = Tag.find_by(tag_params)
     unless tag
-      render json: {
-        error: 'Cattle is not registered'
-      }, status: 404 # Not Found
+      render json: { errors: ['Cattle is not registered'] }, status: :not_found
       return
     end
-    Cattle.find_by(tag_id: tag.id).delete
-    tag.delete
-    render status: 200 # OK
+    tag.destroy
+    render status: :ok
   end
 end
