@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   get 'health', to: 'health#index'
   get 'health/login', to: 'health#login_placeholder'
 
-  # root 'WelcomeController#index'
+  root to: redirect('https://cowhub.io')
 end
