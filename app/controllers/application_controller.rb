@@ -19,13 +19,11 @@ class ApplicationController < ActionController::API
   def http_token
     @http_token ||=
       if request.headers['Authorization'].present?
-        puts request.headers['Authorization']
         request.headers['Authorization'].split(' ').last
       end
   end
 
   def auth_token
-    puts http_token
     @auth_token ||= JsonWebToken.decode(http_token)
   end
 end
