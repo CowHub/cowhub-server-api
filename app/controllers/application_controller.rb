@@ -27,6 +27,7 @@ class ApplicationController < ActionController::API
   end
 
   def user_id_in_token?
-    http_token && auth_token && auth_token[:user_id].to_i
+    auth_token_ = auth_token
+    auth_token_ && auth_token_[:user_id].to_i
   end
 end
