@@ -1,4 +1,7 @@
 class AuthenticationController < ApplicationController
+  before_filter :authenticate_request!, except: [:new_user, :new_session]
+
+  # USER REGISTRATION
   def new_user
     user = User.find_for_database_authentication(email: params[:email])
     unless user
@@ -18,6 +21,11 @@ class AuthenticationController < ApplicationController
     render json: { errors: ['User already exists!'] }, status: :conflict
   end
 
+  def show_user
+    render json: { user: current_user }, status: :ok
+  end
+
+  # USER SESSION
   def new_session
     user = User.find_for_database_authentication(email: params[:email])
     if user.valid_password?(params[:password])
