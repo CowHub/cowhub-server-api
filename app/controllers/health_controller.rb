@@ -4,8 +4,4 @@ class HealthController < ApplicationController
   def index
     render json: { status: 'online' }
   end
-
-  def login_placeholder # TODO: Remove
-    render json: { user: current_user }
-  end
 end
