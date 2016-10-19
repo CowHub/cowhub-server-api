@@ -1,5 +1,5 @@
 class AuthenticationController < ApplicationController
-  before_filter :authenticate_request!, except: [:new_user, :new_session]
+  before_action :authenticate_request!, except: [:new_user, :new_session]
 
   # USER REGISTRATION
   def new_user
