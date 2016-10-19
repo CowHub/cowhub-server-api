@@ -2,3 +2,6 @@ test:
   override:
     - bundle exec rubocop
     - bundle exec rspec
+  post:
+    - git add remote gitlab https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.doc.ic.ac.uk/cowhub/cowhub-server-api
+    - git push gitlab $(git branch | grep \* | awk -F ' ' '{ print $2 }')
