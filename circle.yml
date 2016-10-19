@@ -3,5 +3,6 @@ test:
     - bundle exec rubocop
     - bundle exec rspec
   post:
+    - git fetch --unshallow ; echo
     - git remote add gitlab git@gitlab.doc.ic.ac.uk:cowhub/cowhub-server-api
     - git push gitlab $(git branch | grep \* | awk -F ' ' '{ print $2 }')
