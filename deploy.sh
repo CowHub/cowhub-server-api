@@ -1,4 +1,4 @@
 #!/bin/bash
 
 echo -e "DEPLOYING...\n\n\n"
-ssh root@146.169.46.166 "/bin/bash -c /deploy.sh"
+ssh root@cloud-vm-server-api-01 "/bin/bash -c /deploy.sh"
