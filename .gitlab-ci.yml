@@ -18,7 +18,6 @@ stages:
   - deploy
 
 before_script:
-  - uname -a
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
   - eval $(ssh-agent -s)
