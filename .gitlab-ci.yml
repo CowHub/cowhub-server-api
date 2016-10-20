@@ -1,0 +1,22 @@
+image: "ruby:2.3.1"
+
+services:
+  - postgres:latest
+
+cache:
+  paths:
+    - vendor/ruby
+
+before_script:
+  - ruby -v
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install -j $(nproc) --path vendor
+  - bundle exec rake db:migrate
+
+rubocop:
+  script:
+  - bundle exec rubocop
+
+rspec:
+  script:
+  - bundle exec rspec
