@@ -14,4 +14,4 @@ RUN bundle install
 COPY . .
 
 EXPOSE 80 443
-CMD [ "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
+ENTRYPOINT [ "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
