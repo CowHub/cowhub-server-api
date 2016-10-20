@@ -18,4 +18,3 @@ test:
 production:
   <<: *default
   database: cowhub-server-api_production
-  password: "D8kKTVZBz/b8jxj32lTw8cvJaQ0FGrfytPc+rXh08PY="
