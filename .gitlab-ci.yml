@@ -31,7 +31,8 @@ rspec:
     - bundle exec rspec
 
 deploy:
-  image: "docker:latest"
+  image:
+    - "docker:latest"
   only:
     - feature/docker_deploy
   script:
