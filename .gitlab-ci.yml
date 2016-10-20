@@ -41,3 +41,4 @@ deploy:
     - feature/docker_deploy
   script:
     - docker build -t cowhub-server-api .
+    - ./deploy.sh
