@@ -19,5 +19,5 @@ rubocop:
 rspec:
   script:
   - cp config/database-gitlab.yml config/database.yml
-  - bundle exec rake db:migrate
+  - bundle exec rake db:setup db:migrate
   - bundle exec rspec
