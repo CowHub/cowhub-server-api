@@ -29,6 +29,7 @@ rspec:
     - bundle exec rspec
 
 deploy:
-  only: feature/docker_deploy
+  only: 
+    - feature/docker_deploy
   script:
     - docker build -t cowhub-server-api .
