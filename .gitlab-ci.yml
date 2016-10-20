@@ -13,26 +13,32 @@ cache:
   paths:
     - vendor/ruby
 
-before_script:
-  image: "ruby:2.3.1"
-  - ruby -v
-  - gem install bundler --no-ri --no-rdoc
-  - bundle install -j $(nproc) --path vendor
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
 
 rubocop:
-  image: "ruby:2.3.1"
+  stage: test
   script:
     - bundle exec rubocop
 
 rspec:
-  image: "ruby:2.3.1"
+  stage: test
   script:
     - bundle exec rake db:setup db:migrate
     - bundle exec rspec
 
 deploy:
-  image:
-    - "docker:latest"
+  stage: deploy
+  image: docker:latest
   only:
     - feature/docker_deploy
   script:
