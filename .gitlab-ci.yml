@@ -21,6 +21,7 @@ before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
+  - apt-get install -y rsync
   - ruby -v
   - gem install bundler --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
