@@ -1,5 +1,11 @@
 image: "ruby:2.3.1"
 
+variables:
+  RAILS_ENV: test
+  POSTGRES_HOST: postgres
+  POSTGRES_USER: cowhub-server-api
+  POSTGRES_PASSWORD: sitdownwhenitsraining
+
 services:
   - postgres:latest
 
@@ -14,10 +20,9 @@ before_script:
 
 rubocop:
   script:
-  - env RAILS_ENV=test bundle exec rubocop
+  - bundle exec rubocop
 
 rspec:
   script:
-  - cp config/database-gitlab.yml config/database.yml
-  - env RAILS_ENV=test bundle exec rake db:setup db:migrate
-  - env RAILS_ENV=test bundle exec rspec
+  - bundle exec rake db:setup db:migrate
+  - bundle exec rspec
