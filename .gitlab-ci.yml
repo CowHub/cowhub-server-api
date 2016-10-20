@@ -41,4 +41,5 @@ deploy:
   only:
     - feature/docker_deploy
   script:
-    - ./deploy.sh
+    - rsync -avz . -e ssh root@cloud-vm-46-166.doc.ic.ac.uk:/app
+    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "/bin/bash -c /deploy.sh"
