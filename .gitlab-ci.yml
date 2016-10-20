@@ -22,6 +22,7 @@ before_script:
   - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
   - eval $(ssh-agent -s)
   - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
+  - rm -rf .ssh/known_hosts
   - ruby -v
   - gem install bundler --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
