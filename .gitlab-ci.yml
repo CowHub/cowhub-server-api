@@ -11,6 +11,7 @@ before_script:
   - ruby -v
   - gem install bundler --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
+  - cp config/database-gitlab.yml config/database.yml
   - bundle exec rake db:migrate
 
 rubocop:
