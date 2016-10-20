@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AuthenticationController, type: :controller do
-  before(:suite) do
+  before(:all) do
     @email = 'farmerjoe@farming.co.uk'
     @password = 'somelikeitagriculture'
     @user = User.create(
