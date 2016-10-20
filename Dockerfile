@@ -13,5 +13,7 @@ RUN bundle install
 
 COPY . .
 
+RUN bundle exec rake db:setup db:migrate
+
 EXPOSE 8080
 CMD [ "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
