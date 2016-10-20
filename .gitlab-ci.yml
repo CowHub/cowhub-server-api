@@ -41,7 +41,7 @@ rspec:
 deploy:
   stage: deploy
   only:
-    - feature/docker_deploy
+    - master
   script:
     - rsync --stats --progress -avz . -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/app --delete --exclude ".git"
     - ssh root@cloud-vm-46-166.doc.ic.ac.uk "/bin/bash -c /app/deploy.sh"
