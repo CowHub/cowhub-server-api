@@ -14,10 +14,10 @@ before_script:
 
 rubocop:
   script:
-  - bundle exec rubocop
+  - env RAILS_ENV=test bundle exec rubocop
 
 rspec:
   script:
   - cp config/database-gitlab.yml config/database.yml
-  - bundle exec rake db:setup db:migrate
-  - bundle exec rspec
+  - env RAILS_ENV=test bundle exec rake db:setup db:migrate
+  - env RAILS_ENV=test bundle exec rspec
