@@ -14,25 +14,23 @@ cache:
     - vendor/ruby
 
 stages:
-  - build
   - test
   - deploy
-
-build:
-  stage: build
-  script:
-    - ruby -v
-    - gem install bundler --no-ri --no-rdoc
-    - bundle install -j $(nproc) --path vendor
 
 rubocop:
   stage: test
   script:
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
     - bundle exec rubocop
 
 rspec:
   stage: test
   script:
+    - ruby -v
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
     - bundle exec rake db:setup db:migrate
     - bundle exec rspec
 
