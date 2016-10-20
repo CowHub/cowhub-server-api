@@ -1,5 +1,7 @@
 FROM ruby:2.3.1
 
+ENV RAILS_ENV production
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
