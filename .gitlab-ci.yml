@@ -15,14 +15,20 @@ cache:
 
 before_script:
   - ruby -v
+  - docker info
   - gem install bundler --no-ri --no-rdoc
   - bundle install -j $(nproc) --path vendor
 
 rubocop:
   script:
-  - bundle exec rubocop
+    - bundle exec rubocop
 
 rspec:
   script:
-  - bundle exec rake db:setup db:migrate
-  - bundle exec rspec
+    - bundle exec rake db:setup db:migrate
+    - bundle exec rspec
+
+deploy:
+  script:
+    - docker build -t cowhub-server-api .
+    - docker push cowhub-server-api 146.169.46.47:5000/cowhub-server-api
