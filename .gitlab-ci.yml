@@ -1,0 +1,28 @@
+image: "ruby:2.3.1"
+
+variables:
+  RAILS_ENV: test
+  POSTGRES_HOST: postgres
+  POSTGRES_USER: cowhub-server-api
+  POSTGRES_PASSWORD: sitdownwhenitsraining
+
+services:
+  - postgres:latest
+
+cache:
+  paths:
+    - vendor/ruby
+
+before_script:
+  - ruby -v
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install -j $(nproc) --path vendor
+
+rubocop:
+  script:
+  - bundle exec rubocop
+
+rspec:
+  script:
+  - bundle exec rake db:setup db:migrate
+  - bundle exec rspec
