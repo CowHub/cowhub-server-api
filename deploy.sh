@@ -5,7 +5,7 @@ cd /app
 
 # Take service down
 docker rm -f $(docker ps -a -q)
-docker rmi -f $(docker images -q)
+docker rmi -f $(docker images | grep -v 'REPOSITORY' | grep -v 'cowhub-server-api' | grep -v 'ruby' | awk -F ' ' '{ print $3 }')
 
 # Bring service up (with latest)
 docker build -t cowhub-server-api .
