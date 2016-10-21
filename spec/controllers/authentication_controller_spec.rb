@@ -38,6 +38,7 @@ RSpec.describe AuthenticationController, type: :controller do
 
   def auth_token(email, password)
     post :new_session, params: { email: email, password: password }
-    response.body['auth_token']
+    response_body = JSON.parse(response.body)
+    response_body['auth_token']
   end
 end
