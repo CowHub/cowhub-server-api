@@ -28,6 +28,10 @@ class AuthenticationController < ApplicationController
   # USER SESSION
   def new_session
     user = User.find_for_database_authentication(email: params[:email])
+    unless user
+      render json: { errors: ['User does not exist'] }, status: :unauthorized
+      return
+    end
     if user.valid_password?(params[:password])
       new_token_id(user)
       render json: payload(user)
