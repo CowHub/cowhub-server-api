@@ -17,6 +17,15 @@ RSpec.describe AuthenticationController, type: :controller do
   end
 
   describe 'Session Management' do
+    describe 'POST :new_session' do
+      it 'returns a new token for valid user' do
+        post :new_session, params: { email: @email, password: @password }
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body).key?('auth_token')).to be true
+      end
+
+      # TODO: more testing here
+    end
   end
 
   describe 'User Management' do
@@ -32,6 +41,8 @@ RSpec.describe AuthenticationController, type: :controller do
         expect(response).to have_http_status(:unauthorized)
       end
     end
+
+    # TODO: New user
   end
 
   private

@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   get '/health', to: 'health#index'
   get '/health/login', to: 'health#login_placeholder'
 
-  root to: redirect('https://cowhub.io')
+  root to: redirect('//cloud-vm-46-70.doc.ic.ac.uk:80')
 end
