@@ -7,11 +7,16 @@ Rails.application.routes.draw do
   post '/user/authenticate', to: 'authentication#new_session'
 
   # Cattle management
-  get 'cattle', to: 'cattle#index'
-  get 'cattle/:tag', to: 'cattle#show'
-  post 'cattle/new', to: 'cattle#new'
-  post 'cattle/:tag/update', to: 'cattle#update'
-  delete 'cattle/:tag', to: 'cattle#destroy'
+  get    'cattle',        to: 'cattle#index'
+  post   'cattle/new',    to: 'cattle#new'
+  get    'cattle/:id',    to: 'cattle#show'
+  get    'cattle/search', to: 'cattle#search'
+  patch  'cattle/:id',    to: 'cattle#update'
+  delete 'cattle/:id',    to: 'cattle#destroy'
+
+  post 'cattle/:id/imprint', to: 'cattle#upload_imprint'
+  post 'cattle/match',       to: 'cattle#match'
+
 
   # Health check
   get '/health', to: 'health#index'

@@ -3,43 +3,45 @@ class CattleController < ApplicationController
     render json: { cattle: Cattle.all.limit(50) }, status: :ok
   end
 
-  def show
-    tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_by(tag_params)
-    unless tag
-      render json: { errors: ['Cattle is not registered'] }, status: :not_found
+  def new
+    tag_columns = :country_code, :herdmark, :check_digit, :individual_number
+    if Cattle.find_by(params.permit(tag_columns))
+      render json: { errors: ['Cattle already registered'] }, status: :bad_request
       return
     end
-    cattle = Cattle.find_by(tag_id: tag.id)
-    render json: { cattle: cattle.to_json }, status: :ok
+    cattle = Cattle.create(params.permit(Cattle.column_names))
+    render json: { cattle: cattle.to_json }, status: :created
   end
 
-  def new
-    if Tag.find_by(params.permit(Tag.column_names))
-      render json: { errors: ['Tag already registered'] }, status: :bad_request
-      return
-    end
-    tag = Tag.create(params.permit(Tag.column_names))
-    render json: { tag: tag }, status: :created
+  def show
+    cattle = Cattle.find(params[:id])
+    render json: { cattle: cattle.to_json }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: ['Cattle is not registered'] }, status: :not_found
+  end
+
+  def search
   end
 
   def update
-    tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_by(tag_params)
-    tag = Tag.create(tag_params) if tag.nil?
-    cattle = Cattle.find_by(tag_id: tag.id)
+    cattle = Cattle.find(params[:id])
     cattle.update_attributes(params.permit(Cattle.column_names))
-    render status: 200 # OK
+    render json: { cattle: cattle.to_json }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: ['Cattle is not registered'] }, status: :not_found
   end
 
   def destroy
-    tag_params = Tag.parse_tag(params[:tag])
-    tag = Tag.find_by(tag_params)
-    unless tag
-      render json: { errors: ['Cattle is not registered'] }, status: :not_found
-      return
-    end
-    tag.destroy
+    cattle = Cattle.find(params[:id])
+    cattle.destroy
     render status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { errors: ['Cattle is not registered'] }, status: :not_found
+  end
+
+  def upload_imprint
+  end
+
+  def match
   end
 end
