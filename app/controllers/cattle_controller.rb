@@ -21,6 +21,11 @@ class CattleController < ApplicationController
   end
 
   def search
+    cattle = []
+    Cattle.where(params.permit(Cattle.column_names)).each do |c|
+      cattle.push(c.to_json)
+    end
+    render json: { cattle: cattle }, status: :ok
   end
 
   def update
