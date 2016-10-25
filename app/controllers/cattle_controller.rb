@@ -40,8 +40,27 @@ class CattleController < ApplicationController
   end
 
   def upload_imprint
+    begin
+      Cattle.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: { errors: ['Cattle is not registered'] }, status: :not_found
+      return
+    end
+
+    if BiometricImprint.find_by(cattle_id: params[:id])
+      render json: { errors: ['Cattle imprint already uploaded'] }, status: :bad_request
+      return
+    end
+    BiometricImprint.create(cattle_id: params[:id], imprint: params[:imprint])
+    render status: :ok
   end
 
   def match
+    imprint = BiometricImprint.find_by(imprint: params[:imprint])
+    unless imprint
+      render json: { errors: ['Could not match imprint'] }, status: :not_found
+      return
+    end
+    render json: { cattle: imprint.cattle.to_json }, status: :ok
   end
 end
