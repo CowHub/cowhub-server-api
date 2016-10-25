@@ -1,4 +1,6 @@
 class CattleController < ApplicationController
+  before_action :authenticate_request!
+
   def index
     render json: { cattle: Cattle.all.limit(50) }, status: :ok
   end
@@ -30,7 +32,8 @@ class CattleController < ApplicationController
 
   def update
     cattle = Cattle.find(params[:id])
-    cattle.update_attributes(params.permit(Cattle.column_names))
+    info_columns = :name, :breed, :gender, :dob
+    cattle.update_attributes(params.permit(info_columns))
     render json: { cattle: cattle.to_json }, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { errors: ['Cattle is not registered'] }, status: :not_found

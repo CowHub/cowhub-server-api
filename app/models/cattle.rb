@@ -15,13 +15,4 @@ class Cattle < ActiveRecord::Base
       dob: dob
     }
   end
-
-  def self.parse_tag(tag)
-    {
-      country_code: tag[0..1],
-      herdmark: tag[2..7],
-      check_digit: tag[8],
-      individual_number: tag[9..14]
-    }
-  end
 end

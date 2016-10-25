@@ -21,4 +21,4 @@ Metrics/LineLength:
 MethodLength:
   Max: 30
 BlockLength:
-  Max: 100
+  Max: 200
