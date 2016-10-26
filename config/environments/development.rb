@@ -53,7 +53,7 @@ Rails.application.configure do
       origins '*'
       # Reminder: On the following line, the 'methods' refer to the 'Access-
       # Control-Request-Method', not the normal Request Method.
-      resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :put, :patch], credentials: true
+      resource '*', headers: :any, methods: [:get, :post, :options, :delete, :put, :patch], credentials: true
     end
   end
 end
