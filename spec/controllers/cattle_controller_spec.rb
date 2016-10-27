@@ -26,7 +26,7 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'get registered cattle successfully returns cattle information' do
-      cattle = Cattle.create!(
+      cattle = @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '7', individual_number: '00002',
         name: 'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today
@@ -38,7 +38,7 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'get deleted cattle returns http error' do
-      cattle = Cattle.create!(
+      cattle = @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '7', individual_number: '00002'
       )
@@ -90,20 +90,20 @@ RSpec.describe CattleController, type: :controller do
       @cattle4 = { tag: 'FR230011700002', name: nil, breed: nil, gender: nil, dob: nil }
     end
 
-    it 'patch update to unregistered cattle returns http error' do
-      Cattle.create!(
+    it 'put update to unregistered cattle returns http error' do
+      @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '7', individual_number: '00001'
       )
-      Cattle.create!(
+      @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '5', individual_number: '00002'
       )
-      Cattle.create!(
+      @user.cattle.create(
         country_code: 'UK', herdmark: '230042',
         check_digit: '7', individual_number: '00003'
       )
-      Cattle.create!(
+      @user.cattle.create(
         country_code: 'FR', herdmark: '230011',
         check_digit: '7', individual_number: '00002'
       )
@@ -116,21 +116,21 @@ RSpec.describe CattleController, type: :controller do
     end
   end
 
-  describe 'PATCH #update' do
-    it 'patch update to unregistered cattle returns http error' do
-      patch :update, params: {
+  describe 'PUT #update' do
+    it 'put update to unregistered cattle returns http error' do
+      put :update, params: {
         id: '42', name: 'Daisy', breed: 'Wagyu',
         gender: 'female', dob: Date.today
       }
       expect(response).to have_http_status(:not_found)
     end
 
-    it 'patch update to registered cattle updates info returns http success' do
-      cattle = Cattle.create!(
+    it 'put update to registered cattle updates info returns http success' do
+      cattle = @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '7', individual_number: '00002'
       )
-      patch :update, params: {
+      put :update, params: {
         id: cattle.id, name: 'Daisy', breed: 'Wagyu',
         gender: 'female', dob: Date.today
       }
@@ -145,39 +145,11 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'delete registered cattle returns http success' do
-      cattle = Cattle.create!(
+      cattle = @user.cattle.create(
         country_code: 'UK', herdmark: '230011',
         check_digit: '7', individual_number: '00002'
       )
       delete :destroy, params: { id: cattle.id }
-      expect(response).to have_http_status(:ok)
-    end
-  end
-
-  describe 'POST #match' do
-    before(:all) do
-      @data = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQABLAEsAAD/4QCMRXhpZgAAT\
-        TU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAA\
-        BAAIAAIdpAAQAAAABAAAAWgAAAAAAAAEsAAAAAQAAASwAAAABAAOgAQADAAAAAQABAACgAg\
-        AEAAAAAQAAAU+gAwAEAAAAAQAAAOYAAAAA/'
-    end
-
-    it 'post match unregistered cattle imprint returns http error' do
-      post :match, params: { imprint: @data }
-      expect(response).to have_http_status(:not_found)
-    end
-
-    it 'post match registered cattle imprint returns http success' do
-      cattle = Cattle.create!(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00002',
-        name: 'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today
-      )
-      post :upload_imprint, params: { id: cattle.id, imprint: @data }
-      post :match, params: { imprint: @data }
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to eq({ cattle: { tag: 'UK230011700002', name:
-        'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today } }.to_json)
       expect(response).to have_http_status(:ok)
     end
   end
