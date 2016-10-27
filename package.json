@@ -1,11 +1,8 @@
 {
   "name": "cowhub-server-api",
   "version": "0.0.1",
-  "description": "## Getting Started",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+    "server": "env RAILS_ENV=development bundle exec rails s",
+    "test": "env RAILS_ENV=test bundle exec rubocop; env RAILS_ENV=test bundle exec rspec" 
+  }
 }
