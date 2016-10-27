@@ -33,6 +33,9 @@ group :development, :test do
 
   # Rspec for testing
   gem 'rspec-rails'
+
+  # Faker for generating content
+  gem 'faker'
 end
 
 group :development do
