@@ -6,16 +6,21 @@ class CattleController < ApplicationController
   end
 
   def new
-    if Cattle.find_by(:country_code, :herdmark, :check_digit, :individual_number)
-      render json: { errors: ['Cattle already registered'] }, status: :bad_request
-    else
-      cattle = Cattle.create(params.permit(Cattle.column_names))
+    cattle = current_user.cattle.create(
+      country_code: params[:country_code],
+      herdmark: params[:herdmark],
+      check_digit: params[:check_digit],
+      individual_number: params[:individual_number]
+    )
+    if cattle.valid?
       render json: { cattle: cattle }, status: :created
+    else
+      render json: { errors: cattle.errors.full_messages }, status: :bad_request
     end
   end
 
   def show
-    cattle = current_user.cattle.find_by(params[:id])
+    cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
       render json: { cattle: cattle }, status: :ok
     else
@@ -24,22 +29,26 @@ class CattleController < ApplicationController
   end
 
   def search
-    render json: { cattle: user.cattle.where(params.permit(Cattle.column_names)) }, status: :ok
+    render json: { cattle: current_user.cattle.where(params.permit(Cattle.column_names)) }, status: :ok
   end
 
   def update
-    cattle = Cattle.find_by(params[:id])
+    cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
-      info_columns = :name, :breed, :gender, :dob
-      cattle.update_attributes(params.permit(info_columns))
-      render json: { cattle: cattle.to_json }, status: :ok
+      cattle.assign_attributes(params.permit(Cattle.column_names))
+      if cattle.valid?
+        cattle.save
+        render json: { cattle: cattle }, status: :ok
+      else
+        render json: { errors: cattle.errors.full_messages }, status: :ok
+      end
     else
       render json: { errors: ['Cattle is not registered'] }, status: :not_found
     end
   end
 
   def destroy
-    cattle = Cattle.find_by(params[:id])
+    cattle = Cattle.find_by(id: params[:id])
     if cattle
       cattle.destroy
       render status: :ok
