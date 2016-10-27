@@ -48,7 +48,7 @@ class CattleController < ApplicationController
   end
 
   def destroy
-    cattle = Cattle.find_by(id: params[:id])
+    cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
       cattle.destroy
       render status: :ok
