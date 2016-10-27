@@ -11,7 +11,6 @@ class AuthenticationController < ApplicationController
         password_confirmation: params[:password_confirmation]
       )
       if user.valid?
-        new_token_id(user)
         render json: payload(user), status: :created
       else
         render json: { errors: user.errors.full_messages }, status: :bad_request
@@ -33,8 +32,7 @@ class AuthenticationController < ApplicationController
       return
     end
     if user.valid_password?(params[:password])
-      new_token_id(user)
-      render json: payload(user)
+      render json: payload(user), status: :ok
     else
       render json: { errors: ['Invalid Username/Password'] }, status: :unauthorized
     end
@@ -42,15 +40,10 @@ class AuthenticationController < ApplicationController
 
   private
 
-  def new_token_id(user)
-    user.token_id = rand(10_000_000)
-    user.save && user
-  end
-
   def payload(user)
     return nil unless user && user.id
     {
-      auth_token: JsonWebToken.encode(id: user.id, token_id: user.token_id),
+      auth_token: user.generate_token,
       user: { id: user.id, email: user.email }
     }
   end

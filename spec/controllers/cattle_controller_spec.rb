@@ -1,24 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe CattleController, type: :controller do
-  def setup
-    @controller = AuthenticationController.new
-    email = 'farmerjoe@farming.co.uk'
-    password = 'somelikeitagriculture'
-    User.create(
-      email: email,
-      password: password,
-      password_confirmation: password
-    )
-    post :new_session, params: { email: email, password: password }
-    @auth_token = JSON.parse(response.body)['auth_token']
-    @controller = CattleController.new
+  before(:all) do
+    @email = 'farmerjoe@farming.co.uk'
+    @password = 'somelikeitagriculture'
+    @user = User.find_by(email: @email)
+    unless @user
+      @user = User.create(
+        email: @email,
+        password: @password,
+        password_confirmation: @password
+      )
+    end
+    @auth_token = @user.generate_token
+  end
+
+  before(:each) do
+    @request.headers['Authorization'] = "Bearer #{@auth_token}"
   end
 
   describe 'GET #show' do
     it 'get unregistered cattle returns http error' do
-      request.headers['Authorization'] = "Bearer #{@auth_token}"
-      get :show, params: { token: @token, id: '42' }
+      get :show, params: { id: '42' }
       expect(response).to have_http_status(:not_found)
     end
 
@@ -210,5 +213,13 @@ RSpec.describe CattleController, type: :controller do
         'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today } }.to_json)
       expect(response).to have_http_status(:ok)
     end
+  end
+
+  private
+
+  def auth_token(email, password)
+    post :new_session, controller: :authentication_controller, params: { email: email, password: password }
+    response_body = JSON.parse(response.body)
+    response_body['auth_token']
   end
 end
