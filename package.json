@@ -1,0 +1,12 @@
+{
+  "name": "cowhub-server-api",
+  "version": "0.0.1",
+  "scripts": {
+    "db_setup": "env RAILS_ENV=development bundle exec rake db:setup db:migrate",
+    "db_setup_test": "env RAILS_ENV=test bundle exec rake db:setup db:migrate",
+    "rspec": "npm run db_setup_test; env RAILS_ENV=test bundle exec rspec",
+    "rubocop": "env RAILS_ENV=test bundle exec rubocop",
+    "server": "env RAILS_ENV=development bundle exec rails s",
+    "test": "npm run rubocop; npm run rspec"
+  }
+}
