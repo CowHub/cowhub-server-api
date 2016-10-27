@@ -25,7 +25,7 @@ class CattleController < ApplicationController
     if cattle
       render json: { cattle: cattle }, status: :ok
     else
-      render json: { errors: ['Cattle is not registered'] }, status: :not_found
+      render status: :not_found
     end
   end
 
@@ -44,7 +44,7 @@ class CattleController < ApplicationController
         render json: { errors: cattle.errors.full_messages }, status: :ok
       end
     else
-      render json: { errors: ['Cattle is not registered'] }, status: :not_found
+      render status: :not_found
     end
   end
 
@@ -54,7 +54,7 @@ class CattleController < ApplicationController
       cattle.destroy
       render status: :ok
     else
-      render json: { errors: ['Cattle is not registered'] }, status: :not_found
+      render status: :not_found
     end
   end
 end
