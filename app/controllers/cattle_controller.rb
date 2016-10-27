@@ -2,7 +2,7 @@ class CattleController < ApplicationController
   before_action :authenticate_request!
 
   def index
-    render json: { cattle: Cattle.all.limit(50) }, status: :ok
+    render json: { cattle: current_user.cattle }, status: :ok
   end
 
   def new

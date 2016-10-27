@@ -10,5 +10,7 @@ class CreateCattleTable < ActiveRecord::Migration
       t.string :gender
       t.date :dob
     end
+
+    add_reference :cattle, :user, index: true, foreign_key: true
   end
 end

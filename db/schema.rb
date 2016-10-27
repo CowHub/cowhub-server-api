@@ -15,12 +15,6 @@ ActiveRecord::Schema.define(version: 20161025162357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "biometric_imprints", force: :cascade do |t|
-    t.integer "cattle_id"
-    t.string  "imprint"
-    t.index ["cattle_id"], name: "index_biometric_imprints_on_cattle_id", using: :btree
-  end
-
   create_table "cattle", force: :cascade do |t|
     t.string  "country_code"
     t.integer "herdmark"
@@ -30,6 +24,14 @@ ActiveRecord::Schema.define(version: 20161025162357) do
     t.string  "breed"
     t.string  "gender"
     t.date    "dob"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
+  end
+
+  create_table "image", force: :cascade do |t|
+    t.integer "cattle_id"
+    t.string  "image_uri"
+    t.index ["cattle_id"], name: "index_image_on_cattle_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,5 +52,6 @@ ActiveRecord::Schema.define(version: 20161025162357) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "biometric_imprints", "cattle"
+  add_foreign_key "cattle", "users"
+  add_foreign_key "image", "cattle"
 end
