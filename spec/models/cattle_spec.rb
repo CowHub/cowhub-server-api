@@ -5,6 +5,18 @@ RSpec.describe Cattle, type: :model do
     expect(FactoryGirl.create(:cattle)).to be_valid
   end
 
+  it 'is valid with lowercase country_code' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.country_code = cattle.country_code.downcase
+    expect(cattle).to be_valid
+  end
+
+  it 'is valid with lowercase herdmark' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.herdmark = cattle.herdmark.downcase
+    expect(cattle).to be_valid
+  end
+
   it 'invalid without a country_code' do
     cattle = FactoryGirl.build(:cattle)
     cattle.country_code = nil
@@ -29,21 +41,39 @@ RSpec.describe Cattle, type: :model do
     expect(cattle).to_not be_valid
   end
 
-  it 'invalid with an invalid country_code' do
+  it 'invalid with an invalid country_code (longer)' do
     cattle = FactoryGirl.build(:cattle)
     cattle.country_code = 'BLA'
     expect(cattle).to_not be_valid
   end
 
-  it 'invalid with an invalid herdmark' do
+  it 'invalid with an invalid country_code (shorter)' do
     cattle = FactoryGirl.build(:cattle)
-    cattle.herdmark = '10000000'
+    cattle.country_code = 'A'
     expect(cattle).to_not be_valid
   end
 
-  it 'invalid with an invalid check_digit' do
+  it 'invalid with an invalid herdmark (longer)' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.herdmark = '1000000'
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid herdmark (shorter)' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.herdmark = '10000'
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid check_digit (greater)' do
     cattle = FactoryGirl.build(:cattle)
     cattle.check_digit = 10
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid check_digit (zero)' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.check_digit = 0
     expect(cattle).to_not be_valid
   end
 
