@@ -1,6 +1,5 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
-  has_many :image
 
   validates :individual_number, uniqueness: { scope: [:country_code, :herdmark, :check_digit] }
 
