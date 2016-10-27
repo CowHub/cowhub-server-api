@@ -9,10 +9,7 @@ RSpec.describe Cattle, type: :model do
     }
   end
 
-  it 'is valid with valid attributes' do
-    expect()
-  end
-
+  it 'is valid with valid attributes'
   it 'is not valid without a country_code'
   it 'is not valid without a herdmark'
   it 'is not valid without a check_digit'
