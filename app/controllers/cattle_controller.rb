@@ -13,6 +13,7 @@ class CattleController < ApplicationController
       individual_number: params[:individual_number]
     )
     if cattle.valid?
+      cattle.save
       render json: { cattle: cattle }, status: :created
     else
       render json: { errors: cattle.errors.full_messages }, status: :bad_request
