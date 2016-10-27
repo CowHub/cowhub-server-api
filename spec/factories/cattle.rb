@@ -1,3 +1,5 @@
+require 'faker'
+
 FactoryGirl.define do
   factory :cattle do
     user_id { FactoryGirl.create(:user).id }
@@ -5,8 +7,8 @@ FactoryGirl.define do
     herdmark '230011'
     check_digit 7
     individual_number 2
-    name 'Daisy'
-    breed 'Wagyu'
+    name Faker::Name.name
+    breed Faker::Hacker.noun
     gender 'female'
     dob Date.today
   end
