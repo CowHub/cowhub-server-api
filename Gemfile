@@ -36,6 +36,9 @@ group :development, :test do
 
   # Faker for generating content
   gem 'faker'
+
+  # Factory Girl
+  gem 'factory_girl_rails'
 end
 
 group :development do
