@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025162357) do
+ActiveRecord::Schema.define(version: 20161027201349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cattle", force: :cascade do |t|
-    t.string  "country_code"
-    t.integer "herdmark"
-    t.integer "check_digit"
-    t.integer "individual_number"
+    t.string  "country_code",      null: false
+    t.string  "herdmark",          null: false
+    t.integer "check_digit",       null: false
+    t.integer "individual_number", null: false
     t.string  "name"
     t.string  "breed"
     t.string  "gender"

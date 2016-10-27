@@ -5,32 +5,57 @@ RSpec.describe Cattle, type: :model do
     expect(FactoryGirl.create(:cattle)).to be_valid
   end
 
-  it 'is not valid without a country_code' do
+  it 'invalid without a country_code' do
     cattle = FactoryGirl.build(:cattle)
     cattle.country_code = nil
     expect(cattle).to_not be_valid
   end
 
-  it 'is not valid without a herdmark' do
+  it 'invalid without a herdmark' do
     cattle = FactoryGirl.build(:cattle)
     cattle.herdmark = nil
     expect(cattle).to_not be_valid
   end
 
-  it 'is not valid without a check_digit' do
+  it 'invalid without a check_digit' do
     cattle = FactoryGirl.build(:cattle)
     cattle.check_digit = nil
     expect(cattle).to_not be_valid
   end
 
-  it 'is not valid without an individual_number' do
+  it 'invalid without an individual_number' do
     cattle = FactoryGirl.build(:cattle)
     cattle.individual_number = nil
     expect(cattle).to_not be_valid
   end
 
-  it 'is not valid with an invalid country_code'
-  it 'is not valid with an invalid herdmark'
-  it 'is not valid with an invalid check_digit'
-  it 'is not valid with an invalid individual_number'
+  it 'invalid with an invalid country_code' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.country_code = 'BLA'
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid herdmark' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.herdmark = '10000000'
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid check_digit' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.check_digit = 10
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid individual_number (negative)' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.individual_number = -10
+    expect(cattle).to_not be_valid
+  end
+
+  it 'invalid with an invalid individual_number (more than 99,999)' do
+    cattle = FactoryGirl.build(:cattle)
+    cattle.individual_number = 100_000
+    expect(cattle).to_not be_valid
+  end
 end
