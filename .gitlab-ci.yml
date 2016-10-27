@@ -17,7 +17,6 @@ stages:
   - release
   - deploy
 
-
 rubocop:
   stage: test
   script:

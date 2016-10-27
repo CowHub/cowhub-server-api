@@ -5,6 +5,6 @@
     "db_migrate": "bundle exec rake db:migrate",
     "rspec": "npm run db_migrate; bundle exec rspec",
     "rubocop": "bundle exec rubocop",
-    "test": "npm run rubocop -s; npm run rspec -s"
+    "test": "npm run rubocop -s; npm run rspec -s" 
   }
 }
