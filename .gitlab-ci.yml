@@ -1,7 +1,4 @@
-image: jonaskello/docker-and-compose:1.12.1-1.8.0
-
-services:
-  - docker:1.12.1-dind
+image: "ruby:2.3.1"
 
 variables:
   RAILS_ENV: test
@@ -9,30 +6,51 @@ variables:
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
 
+services:
+  - postgres:latest
+
+cache:
+  paths:
+    - vendor/ruby
+
 stages:
   - test
   - release
   - deploy
 
 before_script:
-  - docker-compose build
-  - docker-compose run web bundle exec rake db:create
-
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
+  - rm -rf .ssh/known_hosts
+  - ruby -v
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install -j $(nproc) --path vendor
 
 
 rubocop:
   stage: test
   script:
-    - docker info
+    - bundle exec rubocop
 
 rspec:
   stage: test
   script:
-    - docker info
-
+    - bundle exec rake db:setup db:migrate
+    - bundle exec rspec
 
 
 release:
   stage: release
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    - rsync --stats --progress -avz . -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/app --delete --exclude ".git"
+    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "/bin/bash -c /app/deploy.sh"
