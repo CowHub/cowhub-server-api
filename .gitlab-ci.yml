@@ -1,4 +1,4 @@
-image: "ruby:2.3.1"
+image: "docker:latest"
 
 variables:
   RAILS_ENV: test
@@ -6,42 +6,19 @@ variables:
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
 
-services:
-  - postgres:latest
-
-cache:
-  paths:
-    - vendor/ruby
-
 stages:
   - test
-  - deploy
 
 before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
-  - rm -rf .ssh/known_hosts
-  - ruby -v
-  - gem install bundler --no-ri --no-rdoc
-  - bundle install -j $(nproc) --path vendor
+  - docker-compose -v
+  - docker-compose run web bundle exec rake db:create
 
 rubocop:
   stage: test
   script:
-    - bundle exec rubocop
+    - docker-compose run web npm run rubocop
 
 rspec:
   stage: test
   script:
-    - bundle exec rake db:setup db:migrate
-    - bundle exec rspec
-
-deploy:
-  stage: deploy
-  only:
-    - master
-  script:
-    - rsync --stats --progress -avz . -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/app --delete --exclude ".git"
-    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "/bin/bash -c /app/deploy.sh"
+    - docker-compose run web npm run rspec
