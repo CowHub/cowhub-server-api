@@ -40,6 +40,8 @@ release:
   stage: release
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker build -t cowhub/cowhub-server-api:latest .
+    - docker push cowhub/cowhub-server-api
 
 
 deploy:
