@@ -15,7 +15,7 @@ stages:
   - deploy
 
 before_script:
-  - docker-compose build --pull
+  - docker-compose build
   - docker-compose run web bundle exec rake db:create
 
 
