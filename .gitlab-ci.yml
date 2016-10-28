@@ -1,4 +1,4 @@
-image: "docker:latest"
+image: "freddielindsey/docker-with-compose:latest"
 
 services:
   - postgres:latest
@@ -7,8 +7,8 @@ stages:
   - test
 
 before_script:
-  - docker build -t cowhub-server-api .
-  - docker run cowhub-server-api "bundle exec rake db:create"
+  - docker-compose build
+  - docker-compose run web bundle exec rake db:create
 
 rubocop:
   stage: test
