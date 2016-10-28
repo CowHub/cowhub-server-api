@@ -10,15 +10,17 @@ stages:
   - test
 
 before_script:
-  - docker-compose -v
-  - docker-compose run web bundle exec rake db:create
+  - docker info
+  # - docker-compose run web bundle exec rake db:create
 
 rubocop:
   stage: test
   script:
-    - docker-compose run web npm run rubocop
+    - docker info
+    # - docker-compose run web npm run rubocop
 
 rspec:
   stage: test
   script:
-    - docker-compose run web npm run rspec
+    - docker info
+    # - docker-compose run web npm run rspec
