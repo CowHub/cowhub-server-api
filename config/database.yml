@@ -1,11 +1,11 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
+  pool: 5
   timeout: 5000
-  username: <%= ENV.fetch("POSTGRES_USER") { "cowhub-server-api" } %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "sitdownwhenitsraining" } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") {  } %>
+  host: <%= ENV.fetch("POSTGRES_HOST") { 'db' } %>
 
 development:
   <<: *default

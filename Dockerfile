@@ -1,22 +1,16 @@
 FROM ruby:2.3.1
 
-ENV RAILS_ENV production
-
-ENV POSTGRES_HOST cloud-vm-46-196.doc.ic.ac.uk
-ENV POSTGRES_PASSWORD "D8kKTVZBz/b8jxj32lTw8cvJaQ0FGrfytPc+rXh08PY="
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        postgresql-client \
+RUN curl -sSL https://deb.nodesource.com/setup_7.x | bash
+RUN apt-get install -y nodejs build-essential
+RUN apt-get install -y --no-install-recommends postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/app
+WORKDIR /app
+
 COPY Gemfile* ./
 RUN bundle install
 
 COPY . .
-
-RUN bundle exec rake db:setup db:migrate
 
 EXPOSE 8080
 CMD [ "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
