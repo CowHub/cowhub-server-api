@@ -7,6 +7,7 @@ stages:
   - test
 
 before_script:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker-compose build
   - docker-compose run web bundle exec rake db:create
 
