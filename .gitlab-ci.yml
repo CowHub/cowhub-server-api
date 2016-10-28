@@ -8,6 +8,7 @@ stages:
 
 before_script:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker run --rm -it --privileged ubuntu ip link add dummy0 type dummy
   - docker run --rm -it ubuntu ip link add dummy0 type dummy
   # - docker-compose build
   # - docker-compose run web bundle exec rake db:create
