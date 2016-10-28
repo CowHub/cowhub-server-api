@@ -2,16 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CattleController, type: :controller do
   before(:all) do
-    @email = 'farmerjoe@farming.co.uk'
-    @password = 'somelikeitagriculture'
-    @user = User.find_by(email: @email)
-    unless @user
-      @user = User.create(
-        email: @email,
-        password: @password,
-        password_confirmation: @password
-      )
-    end
+    @user = FactoryGirl.create(:user)
     @auth_token = @user.generate_token
   end
 
@@ -20,28 +11,19 @@ RSpec.describe CattleController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'get unregistered cattle returns http error' do
-      get :show, params: { id: '42' }
+    it 'get unregistered cattle' do
+      get :show, params: { id: Faker::Number.number(10_000_000) }
       expect(response).to have_http_status(:not_found)
     end
 
-    it 'get registered cattle successfully returns cattle information' do
-      cattle = @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00002',
-        name: 'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today
-      )
+    it 'get registered cattle' do
+      cattle = FactoryGirl.create(:cattle_extended, user_id: @user.id)
       get :show, params: { id: cattle.id }
       expect(response).to have_http_status(:ok)
-      # expect(response.body).to eq({ cattle: { tag: 'UK230011700002', name:
-      #   'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today } }.to_json)
     end
 
     it 'get deleted cattle returns http error' do
-      cattle = @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00002'
-      )
+      cattle = FactoryGirl.create(:cattle_extended, user_id: @user.id)
       id = cattle.id
       cattle.destroy
       get :show, params: { id: id }
@@ -50,56 +32,30 @@ RSpec.describe CattleController, type: :controller do
   end
 
   describe 'POST #new' do
-    it 'post registration of unregistered tags returns http success' do
-      post :new, params: {
-        country_code: 'UK', herdmark: '230011', check_digit: '7',
-        individual_number: '00002'
-      }
+    it 'post registration of unregistered tags' do
+      post :new, params: FactoryGirl.attributes_for(:cattle)
       expect(response).to have_http_status(:created)
     end
 
-    it 'post complete registration of unregistered tags returns http success' do
-      post :new, params: {
-        country_code: 'UK', herdmark: '230011', check_digit: '7',
-        individual_number: '00002', name: 'Daisy', breed: 'Wagyu',
-        gender: 'female', dob: Date.today
-      }
+    it 'post registration of unregistered tags with extra detail' do
+      post :new, params: FactoryGirl.attributes_for(:cattle_extended)
       expect(response).to have_http_status(:created)
-      # expect(response.body).to eq({ cattle: { tag: 'UK230011700002', name:
-      #   'Daisy', breed: 'Wagyu', gender: 'female', dob: Date.today } }.to_json)
     end
 
     it 'post registration of already registered tags returns http error' do
-      post :new, params: {
-        country_code: 'UK', herdmark: '230011', check_digit: '7',
-        individual_number: '00002'
-      }
-      post :new, params: {
-        country_code: 'UK', herdmark: '230011', check_digit: '7',
-        individual_number: '00002'
-      }
+      cattle = FactoryGirl.build(:cattle)
+      post :new, params: cattle
+      post :new, params: cattle
       expect(response).to have_http_status(:bad_request)
     end
   end
 
   describe 'POST #search' do
     before(:all) do
-      @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00001'
-      )
-      @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '5', individual_number: '00002'
-      )
-      @user.cattle.create(
-        country_code: 'UK', herdmark: '230042',
-        check_digit: '7', individual_number: '00003'
-      )
-      @user.cattle.create(
-        country_code: 'FR', herdmark: '230011',
-        check_digit: '7', individual_number: '00002'
-      )
+      FactoryGirl.create(:cattle, user_id: @user.id, herdmark: '230011', check_digit: '7')
+      FactoryGirl.create(:cattle, user_id: @user.id, herdmark: '230011')
+      FactoryGirl.create(:cattle, user_id: @user.id, check_digit: '7')
+      FactoryGirl.create(:cattle, user_id: @user.id, country_code: 'FR', herdmark: '230011', check_digit: '7')
     end
 
     it 'using country_code' do
@@ -123,10 +79,7 @@ RSpec.describe CattleController, type: :controller do
 
   describe 'PUT #update' do
     it 'put update to unregistered cattle returns http error' do
-      put :update, params: {
-        id: '42', name: 'Daisy', breed: 'Wagyu',
-        gender: 'female', dob: Date.today
-      }
+      put :update, params: FactoryGirl.attributes_for(:cattle, user_id: @user.id, id: Faker::Number.number(10_000_000))
       expect(response).to have_http_status(:not_found)
     end
 
@@ -150,10 +103,7 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'delete registered cattle returns http success' do
-      cattle = @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00002'
-      )
+      cattle = FactoryGirl.create(:cattle, user_id: @user.id)
       delete :destroy, params: { id: cattle.id }
       expect(response).to have_http_status(:ok)
     end

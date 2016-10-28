@@ -6,12 +6,7 @@ class CattleController < ApplicationController
   end
 
   def new
-    cattle = current_user.cattle.create(
-      country_code: params[:country_code],
-      herdmark: params[:herdmark],
-      check_digit: params[:check_digit],
-      individual_number: params[:individual_number]
-    )
+    cattle = current_user.cattle.create(params.permit(Cattle.column_names))
     if cattle.valid?
       cattle.save
       render json: { cattle: cattle }, status: :created
