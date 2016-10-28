@@ -18,25 +18,19 @@ stages:
   - release
   - deploy
 
-before_script:
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
-  - rm -rf .ssh/known_hosts
-  - ruby -v
-  - gem install bundler --no-ri --no-rdoc
-  - bundle install -j $(nproc) --path vendor
-
 
 rubocop:
   stage: test
   script:
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
     - bundle exec rubocop
 
 rspec:
   stage: test
   script:
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install -j $(nproc) --path vendor
     - bundle exec rake db:setup db:migrate
     - bundle exec rspec
 
@@ -53,5 +47,10 @@ deploy:
   only:
     - master
   script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
+    - rm -rf .ssh/known_hosts
     - rsync --stats --progress -avz . -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/app --delete --exclude ".git"
     - ssh root@cloud-vm-46-166.doc.ic.ac.uk "/bin/bash -c /app/deploy.sh"
