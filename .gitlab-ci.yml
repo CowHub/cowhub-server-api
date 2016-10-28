@@ -38,6 +38,8 @@ rspec:
 release:
   image: "gitlab/dind:latest"
   stage: release
+  only:
+    - master
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker build -t cowhub/cowhub-server-api:latest .
