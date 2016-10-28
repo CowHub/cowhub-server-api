@@ -1,26 +1,27 @@
 image: "docker:latest"
 
-variables:
-  RAILS_ENV: test
-  POSTGRES_HOST: postgres
-  POSTGRES_USER: cowhub-server-api
-  POSTGRES_PASSWORD: sitdownwhenitsraining
+services:
+  - postgres:latest
 
 stages:
   - test
 
 before_script:
-  - docker info
-  # - docker-compose run web bundle exec rake db:create
+  - docker build -t cowhub-server-api .
+  - docker run cowhub-server-api "bundle exec rake db:create"
 
 rubocop:
   stage: test
   script:
     - docker info
-    # - docker-compose run web npm run rubocop
 
 rspec:
   stage: test
   script:
     - docker info
-    # - docker-compose run web npm run rspec
+
+variables:
+  RAILS_ENV: test
+  POSTGRES_HOST: postgres
+  POSTGRES_USER: cowhub-server-api
+  POSTGRES_PASSWORD: sitdownwhenitsraining
