@@ -1,7 +1,7 @@
-image: "freddielindsey/docker-with-compose:latest"
+image: "docker:latest"
 
 services:
-  - postgres:latest
+  - docker:dind
 
 stages:
   - test
