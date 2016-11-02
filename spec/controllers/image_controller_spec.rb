@@ -15,14 +15,36 @@ RSpec.describe ImageController, type: :controller do
   describe 'GET #index' do
     it 'get images for cattle with images' do
       get :index, params: { id: @cattle.id }
+      body = JSON.parse response.body
+
       expect(response).to have_http_status(:success)
+      expect(body['images'].length).to be(20)
+    end
+
+    it 'get images for cattle with no images' do
+      cattle = FactoryGirl.create(:cattle, user_id: @user.id)
+      get :index, params: { id: cattle.id }
+      body = JSON.parse response.body
+
+      expect(response).to have_http_status(:success)
+      expect(body['images'].length).to be(0)
     end
   end
 
   describe 'POST #upload' do
-    it 'returns http success' do
-      post :upload, params: { id: @cattle.id }
+    it 'uploads with valid image data' do
+      post :upload, params: { id: @cattle.id, data: SecureRandom.base64 }
       expect(response).to have_http_status(:success)
+    end
+
+    it 'fails with no image data' do
+      post :upload, params: { id: @cattle.id, data: nil }
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'fails with invalid cattle id' do
+      post :upload, params: { id: @cattle.id + 1, data: SecureRandom.base64 }
+      expect(response).to have_http_status(:not_found)
     end
   end
 
