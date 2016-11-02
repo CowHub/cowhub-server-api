@@ -12,7 +12,7 @@ RSpec.describe CattleController, type: :controller do
 
   describe 'GET #show' do
     it 'get unregistered cattle' do
-      get :show, params: { id: Faker::Number.number(10_000_000) }
+      get :show, params: { id: Faker::Number.number(1_000) }
       expect(response).to have_http_status(:not_found)
     end
 
@@ -79,7 +79,7 @@ RSpec.describe CattleController, type: :controller do
 
   describe 'PUT #update' do
     it 'put update to unregistered cattle returns http error' do
-      put :update, params: FactoryGirl.attributes_for(:cattle, user_id: @user.id, id: Faker::Number.number(10_000_000))
+      put :update, params: FactoryGirl.attributes_for(:cattle, user_id: @user.id, id: Faker::Number.number(1_000))
       expect(response).to have_http_status(:not_found)
     end
 
