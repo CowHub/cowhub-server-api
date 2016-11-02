@@ -33,6 +33,12 @@ group :development, :test do
 
   # Rspec for testing
   gem 'rspec-rails'
+
+  # Faker for generating content
+  gem 'faker'
+
+  # Factory Girl
+  gem 'factory_girl_rails'
 end
 
 group :development do

@@ -20,3 +20,5 @@ Metrics/LineLength:
   Max: 120
 MethodLength:
   Max: 30
+BlockLength:
+  Max: 200

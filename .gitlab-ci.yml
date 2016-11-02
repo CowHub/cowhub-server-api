@@ -1,7 +1,6 @@
 image: "ruby:2.3.1"
 
 variables:
-  RAILS_ENV: test
   POSTGRES_HOST: postgres
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
@@ -17,7 +16,7 @@ stages:
   - test
   - release
   - deploy
-
+ 
 
 rubocop:
   stage: test
@@ -44,7 +43,6 @@ release:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker build -t cowhub/cowhub-server-api:latest .
     - docker push cowhub/cowhub-server-api
-
 
 deploy:
   stage: deploy

@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018180136) do
+ActiveRecord::Schema.define(version: 20161027201349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cattle", force: :cascade do |t|
+    t.string  "country_code",      null: false
+    t.string  "herdmark",          null: false
+    t.integer "check_digit",       null: false
+    t.integer "individual_number", null: false
+    t.string  "name"
+    t.string  "breed"
+    t.string  "gender"
+    t.date    "dob"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
+  end
+
+  create_table "image", force: :cascade do |t|
+    t.integer "cattle_id"
+    t.string  "image_uri"
+    t.index ["cattle_id"], name: "index_image_on_cattle_id", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -33,4 +52,6 @@ ActiveRecord::Schema.define(version: 20161018180136) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "cattle", "users"
+  add_foreign_key "image", "cattle"
 end

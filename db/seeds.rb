@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+if ENV['RAILS_ENV'] == 'development'
+  User.create(email: 'idontknow@my.email', password: 'changeme', password_confirmation: 'changeme')
+end
