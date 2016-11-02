@@ -1,5 +1,5 @@
 class ImageController < ApplicationController
-  before_filter :authenticate_request!
+  before_action :authenticate_request!
 
   def index
     cattle = current_user.cattle.find_by(id: params[:id])
@@ -28,5 +28,11 @@ class ImageController < ApplicationController
   end
 
   def verify
+    images = Image.where(image_uri: params[:data])
+    cattle = []
+    images && images.each do |i|
+      cattle.push(i.cattle)
+    end
+    render json: { cattle: cattle }, status: :ok
   end
 end
