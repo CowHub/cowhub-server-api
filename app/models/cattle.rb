@@ -1,5 +1,7 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
+  has_many :image
+
   before_save :before_save
 
   validates :country_code, presence: true,
