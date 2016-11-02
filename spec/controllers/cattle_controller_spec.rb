@@ -43,7 +43,7 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'post registration of already registered tags returns http error' do
-      cattle = FactoryGirl.build(:cattle)
+      cattle = FactoryGirl.attributes_for(:cattle)
       post :new, params: cattle
       post :new, params: cattle
       expect(response).to have_http_status(:bad_request)
@@ -53,7 +53,7 @@ RSpec.describe CattleController, type: :controller do
   describe 'POST #search' do
     before(:all) do
       FactoryGirl.create(:cattle, user_id: @user.id, herdmark: '230011', check_digit: '7')
-      FactoryGirl.create(:cattle, user_id: @user.id, herdmark: '230011')
+      FactoryGirl.create(:cattle, user_id: @user.id, herdmark: '230011', check_digit: '5')
       FactoryGirl.create(:cattle, user_id: @user.id, check_digit: '7')
       FactoryGirl.create(:cattle, user_id: @user.id, country_code: 'FR', herdmark: '230011', check_digit: '7')
     end
@@ -84,10 +84,7 @@ RSpec.describe CattleController, type: :controller do
     end
 
     it 'put update to registered cattle updates info returns http success' do
-      cattle = @user.cattle.create(
-        country_code: 'UK', herdmark: '230011',
-        check_digit: '7', individual_number: '00002'
-      )
+      cattle = FactoryGirl.create(:cattle, user_id: @user.id)
       put :update, params: {
         id: cattle.id, name: 'Daisy', breed: 'Wagyu',
         gender: 'female', dob: Date.today

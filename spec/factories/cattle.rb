@@ -4,8 +4,8 @@ FactoryGirl.define do
   factory :cattle do
     user_id { FactoryGirl.create(:user).id }
     country_code 'UK'
-    herdmark { format('%6d', Faker::Number.between(1, 999_999)) }
-    check_digit { Faker::Number.between(0, 9) }
+    herdmark { format('%06d', Faker::Number.between(1, 999_999)) }
+    check_digit { Faker::Number.between(1, 9) }
     individual_number { Faker::Number.between(1, 99_999) }
   end
 
