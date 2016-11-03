@@ -13,4 +13,4 @@ RUN bundle install
 COPY . .
 
 EXPOSE 8080
-CMD [ "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
+CMD [ "/bin/bash", "-c", "npm start" ]

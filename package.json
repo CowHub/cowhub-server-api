@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "db_migrate": "bundle exec rake db:migrate",
-    "dev": "bundle exec rails s",
+    "start": "bundle exec rails server -b 0.0.0.0 -p 8080",
     "rspec": "npm run db_migrate; bundle exec rspec",
     "rubocop": "bundle exec rubocop",
-    "test": "npm run rubocop -s; npm run rspec -s" 
+    "test": "npm run rubocop -s; npm run rspec -s"
   }
 }
