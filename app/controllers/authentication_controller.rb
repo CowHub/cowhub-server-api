@@ -38,6 +38,12 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def end_session
+    current_user.token = nil
+    current_user.save
+    render json: {}, status: :ok
+  end
+
   private
 
   def payload(user)
