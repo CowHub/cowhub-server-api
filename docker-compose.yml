@@ -3,7 +3,7 @@ version: '2'
 services:
   db:
     image: postgres
-  web:
+  api:
     build: .
     volumes:
       - .:/app
