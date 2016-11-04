@@ -57,4 +57,4 @@ deploy:
     - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
     - rm -rf .ssh/known_hosts
     - rsync -avz {deploy.sh,docker-compose-production.yml} -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/
-    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "docker login -u "$DOCKER_USER" -p "$DOCKER_PASS" && /deploy.sh"
+    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "docker login -u \"$DOCKER_USER\" -p \"$DOCKER_PASS\" && /bin/bash -c /deploy.sh"
