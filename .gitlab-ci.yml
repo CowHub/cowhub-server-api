@@ -14,42 +14,42 @@ cache:
     - vendor/ruby
 
 stages:
-  - test
-  - release
+  # - test
+  # - release
   - deploy
 
 
-rubocop:
-  stage: test
-  script:
-    - gem install bundler --no-ri --no-rdoc
-    - bundle install -j $(nproc) --path vendor
-    - bundle exec rubocop
-
-rspec:
-  stage: test
-  script:
-    - gem install bundler --no-ri --no-rdoc
-    - bundle install -j $(nproc) --path vendor
-    - bundle exec rake db:setup db:migrate
-    - bundle exec rspec
-
-
-release:
-  image: "gitlab/dind:latest"
-  stage: release
-  only:
-    - master
-  script:
-    - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-    - docker build -t cowhub/cowhub-server-api:latest -f Dockerfile.production .
-    - docker push cowhub/cowhub-server-api
+# rubocop:
+#   stage: test
+#   script:
+#     - gem install bundler --no-ri --no-rdoc
+#     - bundle install -j $(nproc) --path vendor
+#     - bundle exec rubocop
+#
+# rspec:
+#   stage: test
+#   script:
+#     - gem install bundler --no-ri --no-rdoc
+#     - bundle install -j $(nproc) --path vendor
+#     - bundle exec rake db:setup db:migrate
+#     - bundle exec rspec
+#
+#
+# release:
+#   image: "gitlab/dind:latest"
+#   stage: release
+#   only:
+#     - master
+#   script:
+#     - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+#     - docker build -t cowhub/cowhub-server-api:latest -f Dockerfile.production .
+#     - docker push cowhub/cowhub-server-api
 
 
 deploy:
   stage: deploy
-  only:
-    - master
+  # only:
+  #   - master
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - 'which rsync || ( apt-get update -y && apt-get install -y rsync )'
@@ -57,5 +57,4 @@ deploy:
     - ssh-add <(echo "$GITLAB_DEPLOY_KEY")
     - rm -rf .ssh/known_hosts
     - rsync -avz {deploy.sh,docker-compose-production.yml} -e "ssh -o StrictHostKeyChecking=no" root@cloud-vm-46-166.doc.ic.ac.uk:/
-    - echo "RUNNING docker login -u \"$DOCKER_USER\" -p \"$DOCKER_PASS\" && /bin/bash -c /deploy.sh"
-    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "docker login -u \"$DOCKER_USER\" -p \"$DOCKER_PASS\" && /bin/bash -c /deploy.sh"
+    - ssh root@cloud-vm-46-166.doc.ic.ac.uk "docker login -u \"$DOCKER_USER\" -p \"$DOCKER_PASS\" && /deploy.sh"
