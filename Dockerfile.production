@@ -7,6 +7,8 @@ RUN apt-get install -y --no-install-recommends postgresql-client \
 
 WORKDIR /app
 
+ENV RAILS_ENV production
+
 COPY Gemfile* ./
 RUN bundle install
 

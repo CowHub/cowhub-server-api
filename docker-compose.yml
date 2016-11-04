@@ -3,11 +3,13 @@ version: '2'
 services:
   db:
     image: postgres
-  web:
+  api:
     build: .
     volumes:
       - .:/app
     ports:
       - "8080:8080"
+    links:
+      - db
     depends_on:
       - db
