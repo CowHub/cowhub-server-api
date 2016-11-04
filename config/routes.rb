@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post '/user/create', to: 'authentication#new_user'
 
   # Session management
+  post '/user/validate', to: 'authentication#validate_session'
   post '/user/authenticate', to: 'authentication#new_session'
   delete '/user/unauthenticate', to: 'authentication#end_session'
 

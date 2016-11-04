@@ -25,6 +25,11 @@ class AuthenticationController < ApplicationController
   end
 
   # USER SESSION
+  def validate_session
+    user = User.find_by(auth_token)
+    render json: {}, status: user ? :ok : :unauthorized
+  end
+
   def new_session
     user = User.find_for_database_authentication(email: params[:email])
     unless user
