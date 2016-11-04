@@ -5,6 +5,12 @@ services:
     image: postgres
   api:
     build: .
+    command: /bin/bash -c "npm run db_setup && npm start"
+    environment:
+      - RAILS_ENV=development
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_HOST=db
     volumes:
       - .:/app
     ports:
