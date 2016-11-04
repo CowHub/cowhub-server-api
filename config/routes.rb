@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   # Session management
   post '/user/authenticate', to: 'authentication#new_session'
+  delete '/user/unauthenticate', to: 'authentication#end_session'
 
   # Cattle management
   get    '/cattle',        to: 'cattle#index'
