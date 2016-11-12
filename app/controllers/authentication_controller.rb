@@ -45,7 +45,7 @@ class AuthenticationController < ApplicationController
 
   def end_session
     if current_user
-      current_user.token = nil
+      current_user.token_id = nil
       current_user.save
       render json: {}, status: :ok
     else
