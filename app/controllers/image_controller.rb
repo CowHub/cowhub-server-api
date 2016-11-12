@@ -27,12 +27,35 @@ class ImageController < ApplicationController
     end
   end
 
-  def verify
-    images = Image.where(image_uri: params[:data])
-    cattle = []
-    images && images.each do |i|
-      cattle.push(i.cattle)
+  def request_verification
+    unless params[:data]
+      render json: { errors: ['no image uploaded'] }, status: :bad_request
+      return
     end
-    render json: { cattle: cattle }, status: :ok
+    image = VerificationImage.create(image_uri: params[:data])
+    message = JSON.generate(id: image.id)
+    Rails.application.config.task_queue.publish(message, persistent: true)
+    render json: { verificationID: image.id }, status: :ok
+  end
+
+  def check_verification
+    verification = VerificationImage.find_by(id: params[:id])
+    unless verification
+      render json: { errors: ['verification request  not found'] }, status: :not_found
+      return
+    end
+    case verification.cattle_id
+    when nil
+      render status: :ok
+    when -1
+      render json: { errors: ['no matches were found'] }, status: :not_found
+    else
+      Cattle.find_by(id: verification.cattle_id)
+      if cattle
+        render json: { cattle: cattle }, status: :ok
+      else
+        render json: { errors: ['match found but cattle lost'] }, status: :not_found
+      end
+    end
   end
 end
