@@ -1,6 +1,6 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
-  has_many :image
+  has_many :image, dependent: :destroy
 
   before_save :before_save
 
