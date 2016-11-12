@@ -11,6 +11,7 @@ gem 'puma', '~> 3.0'
 gem 'devise'
 gem 'jwt'
 
+# Rabbit MQ
 gem 'bunny'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

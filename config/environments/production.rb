@@ -87,13 +87,4 @@ Rails.application.configure do
       resource '*', headers: :any, methods: [:get, :post, :options, :delete, :put, :patch], credentials: true
     end
   end
-
-  config.bunny = {
-    hostname: '146.169.46.88',
-    port:     5672,
-    ssl:      false,
-    vhost:    '/',
-    username: 'guest',
-    password: 'guest',
-  }
 end

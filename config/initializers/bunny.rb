@@ -1,4 +1,8 @@
 require 'bunny'
 
-config.bunny = Bunny.new(146.169.46.88)
-config.bunny.start
+Rails.application.config do |config|
+  config.bunny = Bunny.new(host: ENV['RABBIT_HOST'])
+  config.bunny.start
+
+  puts config.bunny
+end

@@ -13,6 +13,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST=db
+      - RABBIT_HOST=mq
     volumes:
       - .:/app
     ports:
