@@ -3,6 +3,8 @@ version: '2'
 services:
   db:
     image: postgres
+  mq:
+    image: rabbitmq:3
   api:
     build: .
     command: /bin/bash -c "npm run db_setup && npm start"
@@ -19,3 +21,4 @@ services:
       - db
     depends_on:
       - db
+      - mq
