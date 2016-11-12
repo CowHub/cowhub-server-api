@@ -1,8 +1,6 @@
 require 'bunny'
 
-Rails.application.config do |config|
-  config.bunny = Bunny.new(host: ENV['RABBIT_HOST'])
-  config.bunny.start
-
-  puts config.bunny
-end
+bunny = Bunny.new(host: ENV['RABBIT_HOST'])
+bunny.start
+channel = bunny.create_channel
+Rails.application.config.task_queue = channel.queue('task_queue', durable: true)
