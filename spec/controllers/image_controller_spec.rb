@@ -50,7 +50,7 @@ RSpec.describe ImageController, type: :controller do
 
   describe 'POST #verify' do
     it 'no image returns bad request error' do
-      post :request_verification, params: {}
+      post :request_verification
       expect(response).to have_http_status(:bad_request)
     end
 
@@ -65,44 +65,32 @@ RSpec.describe ImageController, type: :controller do
 
   describe 'GET #verify' do
     it 'invalid id returns not found error' do
-      get :check_verification, params: { id: 42 }
-      body = JSON.parse response.body
-
+      get :check_verification, params: { id: Faker::Number.number(10) }
       expect(response).to have_http_status(:not_found)
-      expect(body['errors']).to eq(['verification request  not found'])
     end
 
     it 'is still unprocessed returns ok' do
-      verification = FactoryGirl.create(:verification_image, image_uri: SecureRandom.base64)
+      verification = FactoryGirl.create(:verification_image)
       get :check_verification, params: { id: verification.id }
       expect(response).to have_http_status(:success)
     end
 
     it 'did not match any cattle returns not found error' do
-      verification = FactoryGirl.create(:verification_image, image_uri: SecureRandom.base64, cattle_id: -1)
+      verification = FactoryGirl.create(:verification_image, cattle_id: -1)
       get :check_verification, params: { id: verification.id }
-      body = JSON.parse response.body
-
       expect(response).to have_http_status(:not_found)
-      expect(body['errors']).to eq(['no matches were found'])
     end
 
     it 'matched unregistered returns not found error' do
-      verification = FactoryGirl.create(:verification_image, image_uri: SecureRandom.base64, cattle_id: 0)
+      verification = FactoryGirl.create(:verification_image, cattle_id: 0)
       get :check_verification, params: { id: verification.id }
-      body = JSON.parse response.body
-
       expect(response).to have_http_status(:not_found)
-      expect(body['errors']).to eq(['match found but cattle lost'])
     end
 
     it 'matched cattle returns cattle' do
-      verification = FactoryGirl.create(:verification_image, image_uri: SecureRandom.base64, cattle_id: @cattle.id)
+      verification = FactoryGirl.create(:verification_image, cattle_id: @cattle.id)
       get :check_verification, params: { id: verification.id }
-      body = JSON.parse response.body
-
       expect(response).to have_http_status(:success)
-      expect(body['cattle']).to eql(JSON.parse(@cattle.to_json))
     end
   end
 end
