@@ -5,6 +5,7 @@ variables:
   POSTGRES_HOST: postgres
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
+  RABBIT_HOST: rabbitmq
 
 services:
   - postgres:latest
