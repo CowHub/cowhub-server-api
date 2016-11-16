@@ -8,5 +8,6 @@ services:
       - POSTGRES_USER=cowhub-server-api
       - POSTGRES_PASSWORD=sitdownwhenitsraining
       - POSTGRES_HOST=146.169.46.196
+      - RABBIT_HOST=146.169.46.88
     ports:
       - "80:8080"
