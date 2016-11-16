@@ -50,7 +50,7 @@ class ImageController < ApplicationController
     when -1
       render json: { errors: ['no matches were found'] }, status: :not_found
     else
-      Cattle.find_by(id: verification.cattle_id)
+      cattle = Cattle.find_by(id: verification.cattle_id)
       if cattle
         render json: { cattle: cattle }, status: :ok
       else

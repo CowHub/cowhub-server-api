@@ -19,18 +19,4 @@ class Cattle < ActiveRecord::Base
     self.country_code = country_code.upcase
     self.herdmark = herdmark.upcase
   end
-
-  def generate_tag
-    "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
-  end
-
-  def to_json
-    {
-      tag: generate_tag,
-      name: name,
-      breed: breed,
-      gender: gender,
-      dob: dob
-    }
-  end
 end

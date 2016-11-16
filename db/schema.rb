@@ -61,15 +61,14 @@ ActiveRecord::Schema.define(version: 20161112172750) do
   end
 
   create_table "verification_images", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "cattle_id"
     t.string   "image_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_verification_images_on_user_id", using: :btree
+    t.index ["cattle_id"], name: "index_verification_images_on_cattle_id", using: :btree
   end
 
   add_foreign_key "cattle", "users"
   add_foreign_key "image", "cattle"
   add_foreign_key "images", "cattle"
-  add_foreign_key "verification_images", "users"
 end
