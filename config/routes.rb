@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   # Image management
   get    '/cattle/:id/images/', to: 'image#index'
   post   '/cattle/:id/images/', to: 'image#upload'
-  post   '/image/verify', to: 'image#request_verification'
-  get    '/image/verify', to: 'image#check_verification'
+  post   '/image/verify',       to: 'image#request_verification'
+  get    '/image/verify/:id',   to: 'image#check_verification'
 
   # Health check
   get '/health', to: 'health#index'
