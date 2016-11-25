@@ -20,7 +20,8 @@ class ImageController < ApplicationController
         image.save
         message = JSON.generate(
           mode: 'register',
-          image: params[:data]
+          image: params[:data],
+          cattle_id: cattle.id
         )
         Rails.application.config.task_queue.publish(message, persistent: true)
         render json: { image: image }, status: :ok
