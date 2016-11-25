@@ -1,9 +1,9 @@
 require 'redis'
 
-if (ENV['RAILS_ENV'] == 'development')
-  params = {host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT']}
-else
+if (ENV['RAILS_ENV'] == 'production')
   params = {host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'], password: ENV['REDIS_PASSWORD']}
+else
+  params = {host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT']}  
 end
 redis = Redis.new(params)
 
