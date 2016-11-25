@@ -5,21 +5,31 @@ services:
     image: postgres
   mq:
     image: rabbitmq:3
+  redis:
+    image: redis
   api:
     build: .
     command: /bin/bash -c "npm run db_setup && npm start"
     environment:
       - RAILS_ENV=development
+      - DIFF_TRESHOLD=100000
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST=db
       - RABBIT_HOST=mq
+      - RABBIT_PORT=5672
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
     volumes:
       - .:/app
     ports:
       - "8080:8080"
     links:
       - db
+      - mq
+      - redis
     depends_on:
       - db
       - mq
+      - redis
