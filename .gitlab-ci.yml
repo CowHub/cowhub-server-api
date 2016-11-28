@@ -6,9 +6,9 @@ variables:
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
   RABBIT_HOST: rabbitmq
-  RABBIT_PORT: 5672
+  RABBIT_PORT: '5672'
   REDIS_HOST: redis
-  REDIS_PORT: 6379
+  REDIS_PORT: '6379'
 
 services:
   - postgres:latest
