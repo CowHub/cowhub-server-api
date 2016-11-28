@@ -13,7 +13,7 @@ variables:
 services:
   - postgres:latest
   - rabbitmq:3
-  - redis
+  - redis:3
 
 cache:
   paths:
