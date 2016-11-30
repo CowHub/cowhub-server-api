@@ -17,5 +17,6 @@ echo "CREATING APPLICATION VERSION..."
 aws elasticbeanstalk create-application-version --region=$REGION --application-name $AWS_APPLICATION_NAME --version-label $DOCKER_TAG --source-bundle S3Bucket=$DEPLOYMENT_BUCKET,S3Key=$BUCKET_DIRECTORY/$DOCKERRUN_FILE
 
 echo "UPDATING APPLICATION VERSION..."
-# Deploy application
-aws elasticbeanstalk update-application-version --region=$REGION --application-name $AWS_APPLICATION_NAME --version-label $DOCKER_TAG
+cd scripts
+eb init -r eu-west-1
+eb deploy -l $DOCKER_TAG
