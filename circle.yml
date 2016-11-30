@@ -2,7 +2,7 @@ machine:
   environment:
     # Setting the tag for Docker-hub
     TAG: $CIRCLE_BRANCH-$CIRCLE_SHA1
-    DOCKER_IMAGE: CowHub/cowhub-server-api:$CIRCLE_BRANCH-$CIRCLE_SHA1
+    DOCKER_IMAGE: cowhub/cowhub-server-api:$CIRCLE_BRANCH-$CIRCLE_SHA1
     RAILS_ENV: test
     POSTGRES_HOST: postgres
     POSTGRES_USER: cowhub-server-api
