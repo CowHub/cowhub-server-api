@@ -3,7 +3,7 @@ class MatchController < ApplicationController
 
   def new
     match = current_user.match.create(image_uri: params[:data])
-    unless cattle.valid?
+    unless match.valid?
       render json: { errors: match.errors.full_messages }, status: :bad_request
       return
     end
