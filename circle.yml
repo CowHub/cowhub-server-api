@@ -8,3 +8,7 @@ machine:
     - postgres
     - rabbitmq-server
     - redis
+
+test:
+  override:
+    - npm test
