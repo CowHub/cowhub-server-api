@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :cattle
-  has_many :match
+  has_many :cattle, dependent: :destroy
+  has_many :match, dependent: :destroy
 
   def generate_token
     update_attribute('token_id', rand(10_000_000)) unless token_id
