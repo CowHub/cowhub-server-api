@@ -4,6 +4,11 @@ DOCKER_TAG=$1
 DOCKERRUN_FILE=$DOCKER_TAG-Dockerrun.aws.json
 EB_BUCKET=$DEPLOYMENT_BUCKET/$BUCKET_DIRECTORY
 
+# Print Dockerrun file
+echo "DOCKER RUN FILE:"
+cat ./scripts/$DOCKERRUN_FILE
+echo ""
+
 # Print env variables for debugging
 echo -e "REGION:\t$REGION"
 echo -e "AWS_APPLICATION_NAME:\t$AWS_APPLICATION_NAME"
