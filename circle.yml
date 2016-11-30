@@ -9,6 +9,10 @@ machine:
     - rabbitmq-server
     - redis
 
+dependencies:
+  post:
+    - pip install awsebcli
+
 test:
   override:
     - npm test
