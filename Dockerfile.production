@@ -13,17 +13,7 @@ COPY .ruby-version ./
 COPY Gemfile* ./
 RUN bundle install
 
-COPY package.json ./
-
-COPY app ./
-COPY bin ./
-COPY config ./
-COPY db ./
-COPY lib ./
-COPY public ./
-COPY spec ./
-COPY Rakefile ./
-COPY config.ru ./
+COPY . .
 
 EXPOSE 80
 CMD [ "/bin/bash", "-c", "npm start" ]
