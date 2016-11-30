@@ -1,10 +1,9 @@
 #! /bin/bash
 DOCKER_TAG=$1
 
-S3_PATH="s3://$DEPLOYMENT_BUCKET/$BUCKET_DIRECTORY/$DOCKERRUN_FILE"
-
 # Prefix of file name is the tag.
 DOCKERRUN_FILE=$DOCKER_TAG-Dockerrun.aws.json
+S3_PATH="s3://$DEPLOYMENT_BUCKET/$BUCKET_DIRECTORY/$DOCKERRUN_FILE"
 
 # Print env variables for debugging
 echo "DOCKER_TAG:\t$DOCKER_TAG"
