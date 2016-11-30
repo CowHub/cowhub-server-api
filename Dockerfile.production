@@ -16,4 +16,4 @@ RUN bundle install
 COPY . .
 
 EXPOSE 80
-CMD [ "/bin/bash", "-c", "npm start" ]
+CMD [ "bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "80" ]
