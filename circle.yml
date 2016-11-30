@@ -4,3 +4,7 @@ machine:
     POSTGRES_HOST: postgres
     POSTGRES_USER: cowhub-server-api
     POSTGRES_PASSWORD: sitdownwhenitsraining
+  services:
+    - postgres
+    - rabbitmq-server
+    - redis
