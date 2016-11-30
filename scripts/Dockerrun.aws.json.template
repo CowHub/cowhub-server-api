@@ -5,7 +5,7 @@
     "Key": "<AUTHENTICATION_KEY>"
   },
   "Image": {
-    "Name": "MY_ORGANIZATION/<IMAGE_NAME>:<TAG>",
+    "Name": "cowhub/<IMAGE_NAME>:<TAG>",
     "Update": "true"
   },
   "Ports": [
