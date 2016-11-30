@@ -18,7 +18,7 @@ class MatchController < ApplicationController
   end
 
   def show
-    match = Match.find_by(id: params[:id])
+    match = current_user.match.find_by(id: params[:id])
     unless match
       render status: :not_found
       return
@@ -28,7 +28,7 @@ class MatchController < ApplicationController
       render status: :ok
     when 'not_found'
       render status: :not_found
-    else
+    when 'found'
       cattle = Cattle.find_by(id: match.cattle_id)
       if cattle
         render json: { cattle: cattle }, status: :ok
@@ -36,6 +36,8 @@ class MatchController < ApplicationController
         # Match found against lost cattle
         render status: :not_found
       end
+    else
+      render status: :bad_request
     end
   end
 end
