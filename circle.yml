@@ -5,7 +5,7 @@ machine:
     POSTGRES_USER: cowhub-server-api
     POSTGRES_PASSWORD: sitdownwhenitsraining
   services:
-    - postgres
+    # - postgres (started by default)
     - rabbitmq-server
     - redis
 
