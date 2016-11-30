@@ -18,5 +18,5 @@ aws elasticbeanstalk create-application-version --region=$REGION --application-n
 
 echo "UPDATING APPLICATION VERSION..."
 cd scripts
-eb init -r $REGION -a $AWS_APPLICATION_NAME
+eb init $AWS_APPLICATION_NAME -r $REGION
 eb deploy -l $DOCKER_TAG
