@@ -21,4 +21,4 @@ echo "DOCKERRUN_FILE:\t$DOCKERRUN_FILE"
 aws elasticbeanstalk create-application-version --region=$REGION --application-name $AWS_APPLICATION_NAME --version-label $DOCKER_TAG --source-bundle S3Bucket=$DEPLOYMENT_BUCKET,S3Key=$BUCKET_DIRECTORY/$DOCKERRUN_FILE
 
 # Deploy application
-aws elasticbeanstalk update-application-version --application-name $AWS_APPLICATION_NAME --version-label $DOCKER_TAG
+aws elasticbeanstalk update-application-version --region=$REGION --application-name $AWS_APPLICATION_NAME --version-label $DOCKER_TAG
