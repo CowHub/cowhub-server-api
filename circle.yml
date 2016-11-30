@@ -15,6 +15,7 @@ machine:
 
 dependencies:
   post:
+    - docker info
     - pip install awsebcli
 
 test:
