@@ -13,4 +13,4 @@ RUN bundle install
 COPY . .
 
 EXPOSE 8080
-CMD [ "/bin/bash", "-c", "npm start" ]
+CMD [ "/bin/bash", "-c", "npm run dev" ]

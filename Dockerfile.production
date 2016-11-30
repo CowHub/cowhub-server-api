@@ -24,4 +24,4 @@ COPY Rakefile ./
 COPY config.ru ./
 
 EXPOSE 80
-CMD [ "/bin/bash", "-c", "npm run production" ]
+CMD [ "/bin/bash", "-c", "npm start" ]
