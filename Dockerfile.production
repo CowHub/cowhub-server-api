@@ -13,6 +13,8 @@ COPY .ruby-version ./
 COPY Gemfile* ./
 RUN bundle install
 
+COPY package.json ./
+
 COPY app ./
 COPY bin ./
 COPY config ./
