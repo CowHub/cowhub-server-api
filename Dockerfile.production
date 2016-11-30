@@ -9,10 +9,19 @@ WORKDIR /app
 
 ENV RAILS_ENV production
 
+COPY .ruby-version ./
 COPY Gemfile* ./
 RUN bundle install
 
-COPY . .
+COPY app ./
+COPY bin ./
+COPY config ./
+COPY db ./
+COPY lib ./
+COPY public ./
+COPY spec ./
+COPY Rakefile ./
+COPY config.ru ./
 
 EXPOSE 80
 CMD [ "/bin/bash", "-c", "npm run production" ]
