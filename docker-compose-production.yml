@@ -5,7 +5,7 @@ services:
     image: cowhub/cowhub-server-api
     environment:
       - RAILS_ENV=production
-      - DIFF_TRESHOLD=100000
+      - DIFF_THRESHOLD=100000
       - POSTGRES_USER=cowhub-server-api
       - POSTGRES_PASSWORD=sitdownwhenitsraining
       - POSTGRES_HOST=146.169.46.196

@@ -19,7 +19,7 @@ end
 #     response = JSON.parse(message)
 #     match = Match.find_by(id: response.request_id)
 #     return unless match
-#     if response.diff < ENV['DIFF_TRESHOLD']
+#     if response.diff < ENV['DIFF_THRESHOLD']
 #       match.update_attribute(status: 'not_found')
 #     else
 #       match.update_attribute(status: 'found')
