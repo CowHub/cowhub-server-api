@@ -7,11 +7,20 @@ machine:
     POSTGRES_HOST: postgres
     POSTGRES_USER: cowhub-server-api
     POSTGRES_PASSWORD: sitdownwhenitsraining
+    RABBIT_HOST: rabbitmq
+    RABBIT_PORT: '5672'
+    REDIS_HOST: redis
+    REDIS_PORT: '6379'
+  hosts:
+    postgres: 127.0.0.1
+    rabbitmq: 127.0.0.1
+    redis: 127.0.0.1
   services:
     - docker
     # - postgres (started by default)
     - rabbitmq-server
     - redis
+    - docker
 
 dependencies:
   post:
@@ -20,7 +29,8 @@ dependencies:
 
 test:
   override:
-    - npm test
+    - bundle exec rubocop
+    - bundle exec rspec
 
 deployment:
   production:
