@@ -23,7 +23,7 @@ RSpec.describe MatchController, type: :controller do
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:success)
-      expect(body['matchId']).to_not be(nil)
+      expect(body['id']).to_not be(nil)
     end
   end
 
@@ -54,7 +54,10 @@ RSpec.describe MatchController, type: :controller do
     it 'matched cattle returns cattle' do
       match = FactoryGirl.create(:match, cattle_id: @cattle.id)
       get :show, params: { id: match.id }
+      body = JSON.parse response.body
+
       expect(response).to have_http_status(:success)
+      expect(body['cattle']).to not_be(nil)
     end
   end
 end
