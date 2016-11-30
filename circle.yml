@@ -38,6 +38,6 @@ deployment:
       - docker build --rm=false -t $DOCKER_IMAGE -f Dockerfile.production .
       - docker push $DOCKER_IMAGE
       # Calling script for uploading JSON descriptor file
-      - sh ./scripts/create_docker_run_file.sh $TAG
+      - sh ./scripts/create_docker_run_file.sh $CIRCLE_BUILD_NUM-$TAG
       # Calling script for setting new application version in AWS EB
-      - sh ./scripts/deploy_image_to_elasticbeanstalk.sh $TAG
+      - sh ./scripts/deploy_image_to_elasticbeanstalk.sh $CIRCLE_BUILD_NUM-$TAG
