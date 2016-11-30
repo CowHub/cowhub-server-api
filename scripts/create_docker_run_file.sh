@@ -2,7 +2,7 @@
 DOCKER_TAG=$1
 
 # Prefix of file name is the tag.
-DOCKERRUN_FILE=$DOCKER_TAG-Dockerrun.aws.json
+DOCKERRUN_FILE=$CIRCLE_BUILD_NUM-$DOCKER_TAG-Dockerrun.aws.json
 S3_PATH="s3://$DEPLOYMENT_BUCKET/$BUCKET_DIRECTORY/$DOCKERRUN_FILE"
 
 # Print env variables for debugging

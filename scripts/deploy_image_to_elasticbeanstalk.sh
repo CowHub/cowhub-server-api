@@ -1,7 +1,7 @@
 #! /bin/bash
 DOCKER_TAG=$1
 
-DOCKERRUN_FILE=$DOCKER_TAG-Dockerrun.aws.json
+DOCKERRUN_FILE=$CIRCLE_BUILD_NUM-$DOCKER_TAG-Dockerrun.aws.json
 EB_BUCKET=$DEPLOYMENT_BUCKET/$BUCKET_DIRECTORY
 
 # Print env variables for debugging
