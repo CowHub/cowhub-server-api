@@ -36,6 +36,7 @@ deployment:
         }
         EOF
       - docker build --rm=false -t $DOCKER_IMAGE -f Dockerfile.production .
+      - docker tag $DOCKER_IMAGE cowhub/cowhub-server-api:latest
       - docker push $DOCKER_IMAGE
       # Calling script for uploading JSON descriptor file
       - sh ./scripts/create_docker_run_file.sh $CIRCLE_BUILD_NUM-$TAG
