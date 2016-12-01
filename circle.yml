@@ -13,6 +13,10 @@ machine:
     - rabbitmq-server
     - redis
 
+database:
+  pre:
+    - mv config/database.yml config/database.yml.backup
+
 dependencies:
   post:
     - docker info
@@ -26,6 +30,7 @@ deployment:
   production:
     branch: master
     commands:
+      - mv config/database.yml.backup config/database.yml
       - |
         cat > ~/.dockercfg << EOF
         {
@@ -38,6 +43,7 @@ deployment:
       - docker build --rm=false -t $DOCKER_IMAGE -f Dockerfile.production .
       - docker tag $DOCKER_IMAGE cowhub/cowhub-server-api:latest
       - docker push $DOCKER_IMAGE
+      - docker push cowhub/cowhub-server-api:latest
       # Calling script for uploading JSON descriptor file
       - sh ./scripts/create_docker_run_file.sh $CIRCLE_BUILD_NUM-$TAG
       # Calling script for setting new application version in AWS EB
