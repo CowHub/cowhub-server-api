@@ -23,18 +23,18 @@ RSpec.describe MatchController, type: :controller do
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:success)
-      expect(body['id']).to_not be(nil)
+      expect(body['match']).to_not be(nil)
     end
   end
 
-  describe 'GET #verify' do
+  describe 'GET #show' do
     it 'invalid id returns not found error' do
       get :show, params: { id: Faker::Number.number(10) }
       expect(response).to have_http_status(:not_found)
     end
 
-    pending 'is still unprocessed returns ok' do
-      match = FactoryGirl.create(:match)
+    it 'is still unprocessed returns ok' do
+      match = FactoryGirl.create(:match, user_id: @user.id)
       get :show, params: { id: match.id }
       expect(response).to have_http_status(:success)
     end
@@ -51,13 +51,13 @@ RSpec.describe MatchController, type: :controller do
       expect(response).to have_http_status(:not_found)
     end
 
-    pending 'matched cattle returns cattle' do
-      match = FactoryGirl.create(:match, cattle_id: @cattle.id)
+    it 'matched cattle returns cattle' do
+      match = FactoryGirl.create(:match, user_id: @user.id, cattle_id: @cattle.id, status: 'found')
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:success)
-      expect(body['cattle']).to not_be(nil)
+      expect(body['cattle']).to_not be(nil)
     end
   end
 end
