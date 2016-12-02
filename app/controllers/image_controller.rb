@@ -14,8 +14,17 @@ class ImageController < ApplicationController
 
   def upload
     cattle = current_user.cattle.find_by(id: params[:id])
-    if cattle
-      image = cattle.image.create(image_uri: params[:data])
+    if params[:data].nil? || params[:data].empty?
+      render status: :bad_request
+    elsif cattle
+      image_uri = "cattle/#{current_user.id}/#{cattle.id}/image-original"
+      $s3.put_object(
+        acl: 'private',
+        body: params[:data],
+        bucket: 'cowhub-production-images',
+        key: image_uri
+      )
+      image = cattle.image.create(image_uri: image_uri)
       if image.valid?
         image.save
         render json: { image: image }, status: :ok
@@ -23,7 +32,7 @@ class ImageController < ApplicationController
         render json: { errors: image.errors.full_messages }, status: :bad_request
       end
     else
-      render json: {}, status: :not_found
+      render status: :not_found
     end
   end
 

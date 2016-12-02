@@ -24,3 +24,9 @@ npm-debug.log
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Rubocop
+0
+
+# Fake volumes
+s3
