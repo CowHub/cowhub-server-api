@@ -18,6 +18,12 @@ class ImageController < ApplicationController
       image = cattle.image.create(image_uri: params[:data])
       if image.valid?
         image.save
+        message = JSON.generate(
+          mode: 'register',
+          image: params[:data],
+          cattle_id: cattle.id
+        )
+        Rails.application.config.task_queue.publish(message, persistent: true)
         render json: { image: image }, status: :ok
       else
         render json: { errors: image.errors.full_messages }, status: :bad_request
@@ -25,14 +31,5 @@ class ImageController < ApplicationController
     else
       render json: {}, status: :not_found
     end
-  end
-
-  def verify
-    images = Image.where(image_uri: params[:data])
-    cattle = []
-    images && images.each do |i|
-      cattle.push(i.cattle)
-    end
-    render json: { cattle: cattle }, status: :ok
   end
 end

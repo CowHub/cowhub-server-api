@@ -5,9 +5,15 @@ variables:
   POSTGRES_HOST: postgres
   POSTGRES_USER: cowhub-server-api
   POSTGRES_PASSWORD: sitdownwhenitsraining
+  RABBIT_HOST: rabbitmq
+  RABBIT_PORT: '5672'
+  REDIS_HOST: redis
+  REDIS_PORT: '6379'
 
 services:
   - postgres:latest
+  - rabbitmq:3
+  - redis:3
 
 cache:
   paths:

@@ -5,8 +5,14 @@ services:
     image: cowhub/cowhub-server-api
     environment:
       - RAILS_ENV=production
+      - DIFF_THRESHOLD=100000
       - POSTGRES_USER=cowhub-server-api
       - POSTGRES_PASSWORD=sitdownwhenitsraining
       - POSTGRES_HOST=146.169.46.196
+      - RABBIT_HOST=146.169.46.88
+      - RABBIT_PORT=5672
+      - REDIS_HOST=146.169.46.122
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=lightningcat
     ports:
       - "80:8080"

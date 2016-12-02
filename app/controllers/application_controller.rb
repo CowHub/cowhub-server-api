@@ -4,14 +4,15 @@ class ApplicationController < ActionController::API
   protected
 
   def authenticate_request!
-    auth_token_ = auth_token
-    unless auth_token_
-      render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+    errors = ['Not Authenticated']
+    token = auth_token
+    unless token
+      render json: { errors: errors }, status: :unauthorized
       return
     end
-    @current_user = User.find_by(auth_token_)
+    @current_user = User.find_by(token)
   rescue JWT::VerificationError, JWT::DecodeError
-    render json: { errors: ['Not Authenticated'] }, status: :unauthorized
+    render json: { errors: errors }, status: :unauthorized
   end
 
   private

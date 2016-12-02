@@ -1,6 +1,7 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
   has_many :image, dependent: :destroy
+  has_many :match, dependent: :destroy
 
   before_save :before_save
 
@@ -18,19 +19,5 @@ class Cattle < ActiveRecord::Base
   def before_save
     self.country_code = country_code.upcase
     self.herdmark = herdmark.upcase
-  end
-
-  def generate_tag
-    "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
-  end
-
-  def to_json
-    {
-      tag: generate_tag,
-      name: name,
-      breed: breed,
-      gender: gender,
-      dob: dob
-    }
   end
 end
