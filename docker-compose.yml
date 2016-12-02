@@ -19,3 +19,7 @@ services:
       - db
     depends_on:
       - db
+  s3:
+    image: lphoward/fake-s3
+    volumes:
+      - ./s3:/fakes3_root
