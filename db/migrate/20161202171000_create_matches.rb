@@ -4,7 +4,7 @@ class CreateMatches < ActiveRecord::Migration[5.0]
       t.references :user, foreign_key: true
       t.references :cattle, foreign_key: true
       t.string :image_uri
-      t.integer :status
+      t.integer :status, default: 'pending'
       t.timestamps
     end
   end
