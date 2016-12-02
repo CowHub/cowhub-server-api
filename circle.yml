@@ -19,7 +19,7 @@ database:
 
 dependencies:
   post:
-    - docker info
+    - mkdir -p s3 && docker run -itd -v ./s3:/fakes3_root lphoward/fake-s3
     - pip install awsebcli
 
 test:
