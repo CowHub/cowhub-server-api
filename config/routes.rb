@@ -19,8 +19,11 @@ Rails.application.routes.draw do
   # Image management
   get    '/cattle/:id/images/', to: 'image#index'
   post   '/cattle/:id/images/', to: 'image#upload'
-  post   '/image/verify', to: 'image#verify'
 
+  # Match management
+  post   '/cattle/match',       to: 'match#new'
+  get    '/cattle/match/:id',   to: 'match#show'
+  
   # Health check
   get '/health', to: 'health#index'
   get '/health/login', to: 'health#login_placeholder'
