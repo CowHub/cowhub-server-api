@@ -4,6 +4,7 @@ Aws.config.update(
   region: 'eu-west-1'
 )
 
+access_configuration = {}
 if ENV['RAILS_ENV'] == 'production'
   access_configuration = {
     access_key_id: ENV['AWS_ACCESS_KEY'],
@@ -11,11 +12,10 @@ if ENV['RAILS_ENV'] == 'production'
   }
 else
   access_configuration = {
-    access_key_id: 'YOUR_ACCESS_KEY_ID',
-    secret_access_key: 'YOUR_SECRET_ACCESS_KEY',
-    s3_endpoint: 'localhost',
-    s3_port: 10001,
-    use_ssl: false
+    access_key_id: 'key',
+    secret_access_key: 'secret',
+    endpoint: 'http://s3:10001',
+    force_path_style: true
   }
 end
 

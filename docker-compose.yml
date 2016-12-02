@@ -17,8 +17,10 @@ services:
       - "8080:8080"
     links:
       - db
+      - s3
     depends_on:
       - db
+      - s3
   s3:
     image: lphoward/fake-s3
     volumes:
