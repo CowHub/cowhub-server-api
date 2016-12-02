@@ -1,4 +1,6 @@
 machine:
+  hosts:
+    s3: 127.0.0.1
   environment:
     # Setting the tag for Docker-hub
     TAG: $CIRCLE_BRANCH-$CIRCLE_SHA1
@@ -19,7 +21,7 @@ database:
 
 dependencies:
   post:
-    - mkdir -p s3 && docker run -itd -v $(pwd)/s3:/fakes3_root lphoward/fake-s3
+    - mkdir -p s3 && docker run -itd -v $(pwd)/s3:/fakes3_root -p 4569:4569 lphoward/fake-s3
     - pip install awsebcli
 
 test:
