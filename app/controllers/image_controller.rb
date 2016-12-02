@@ -17,7 +17,7 @@ class ImageController < ApplicationController
     if params[:data].nil? || params[:data].empty?
       render status: :bad_request
     elsif cattle
-      image_uri = "#{current_user.id}/#{cattle.id}/image-original"
+      image_uri = "cattle/#{current_user.id}/#{cattle.id}/image-original"
       $s3.put_object(
         acl: 'private',
         body: params[:data],
