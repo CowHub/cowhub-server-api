@@ -75,16 +75,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # This handles cross-origin resource sharing.
-  # See: https://github.com/cyu/rack-cors
-  config.middleware.insert_before 0, "Rack::Cors" do
-    allow do
-      origins 'd3b2ewp13q9ixf.cloudfront.net'
-
-      # Reminder: On the following line, the 'methods' refer to the 'Access-
-      # Control-Request-Method', not the normal Request Method.
-      resource '*', headers: :any, methods: [:get, :post, :options, :delete, :put, :patch], credentials: true
-    end
-  end
 end
