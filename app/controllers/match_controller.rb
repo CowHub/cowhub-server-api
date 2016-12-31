@@ -27,11 +27,11 @@ class MatchController < ApplicationController
     match = current_user.match.find_by(id: params[:id])
     if match
       case match.status
-      when :pending
+      when 'pending'
         render status: :ok
-      when :not_found
+      when 'not_found'
         render status: :not_found
-      when :found
+      when 'found'
         cattle = Cattle.find_by(id: match.cattle_id)
         if cattle
           render json: { cattle: cattle }, status: :ok
