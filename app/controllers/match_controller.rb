@@ -25,10 +25,7 @@ class MatchController < ApplicationController
 
   def show
     match = current_user.match.find_by(id: params[:id])
-    unless match
-      render status: :not_found
-      return
-    else
+    if match
       case match.status
       when :pending
         render status: :ok
@@ -45,6 +42,8 @@ class MatchController < ApplicationController
       else
         render status: :bad_request
       end
+    else
+      render status: :not_found
     end
   end
 end
