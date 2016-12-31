@@ -23,6 +23,7 @@ dependencies:
     - wget https://yarnpkg.com/install.sh
     - chmod +x install.sh
     - ./install.sh
+    - bundle install
     - mkdir -p s3 && docker run -itd -v $(pwd)/s3:/fakes3_root -p 4569:4569 lphoward/fake-s3
     - pip install awsebcli
 
