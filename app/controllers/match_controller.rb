@@ -28,22 +28,23 @@ class MatchController < ApplicationController
     unless match
       render status: :not_found
       return
-    end
-    case match.status
-    when 'pending'
-      render status: :ok
-    when 'not_found'
-      render status: :not_found
-    when 'found'
-      cattle = Cattle.find_by(id: match.cattle_id)
-      if cattle
-        render json: { cattle: cattle }, status: :ok
-      else
-        # Match found against lost cattle
-        render status: :not_found
-      end
     else
-      render status: :bad_request
+      case match.status
+      when :pending
+        render status: :ok
+      when :not_found
+        render status: :not_found
+      when :found
+        cattle = Cattle.find_by(id: match.cattle_id)
+        if cattle
+          render json: { cattle: cattle }, status: :ok
+        else
+          # Match found against lost cattle
+          render status: :not_found
+        end
+      else
+        render status: :bad_request
+      end
     end
   end
 end
