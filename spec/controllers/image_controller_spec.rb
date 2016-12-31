@@ -47,27 +47,4 @@ RSpec.describe ImageController, type: :controller do
       expect(response).to have_http_status(:not_found)
     end
   end
-
-  describe 'POST #verify' do
-    it 'no image returns nothing' do
-      post :verify, params: { data: nil }
-      body = JSON.parse response.body
-
-      expect(response).to have_http_status(:success)
-      expect(body['cattle'].length).to be(0)
-    end
-
-    it 'image with multiple cattle returns them' do
-      cattle = FactoryGirl.create_list(:cattle, 25)
-      image_data = SecureRandom.base64
-      cattle.each do |c|
-        FactoryGirl.create(:image, cattle_id: c.id, image_uri: image_data)
-      end
-      post :verify, params: { data: image_data }
-      body = JSON.parse response.body
-
-      expect(response).to have_http_status(:success)
-      expect(body['cattle'].length).to be(25)
-    end
-  end
 end

@@ -35,13 +35,4 @@ class ImageController < ApplicationController
       render status: :not_found
     end
   end
-
-  def verify
-    images = Image.where(image_uri: params[:data])
-    cattle = []
-    images && images.each do |i|
-      cattle.push(i.cattle)
-    end
-    render json: { cattle: cattle }, status: :ok
-  end
 end

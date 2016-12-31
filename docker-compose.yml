@@ -3,6 +3,8 @@ version: '2'
 services:
   db:
     image: postgres
+    volumes:
+      - ./data:/var/lib/postgres/data
   api:
     build: .
     command: /bin/bash -c "sleep 5 && rm -rf /app/tmp ; bundle exec rake db:setup && rails s -p 8080"
