@@ -12,7 +12,6 @@ machine:
   services:
     - docker
     # - postgres (started by default)
-    - rabbitmq-server
     - redis
 
 database:
