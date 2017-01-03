@@ -4,3 +4,10 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+task :test do
+  system("rake db:migrate")
+
+  system("rspec")
+  system("rubocop")
+end
