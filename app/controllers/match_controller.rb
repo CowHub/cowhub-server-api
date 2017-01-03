@@ -6,7 +6,7 @@ class MatchController < ApplicationController
       render status: :bad_request
       return
     end
-    match = current_user.match.create
+    match = current_user.match.create!(image_uri: 'temporary')
     image_uri = "match/#{current_user.id}/#{match.id}/image-original"
     $s3.put_object(
       acl: 'private',
