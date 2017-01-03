@@ -6,6 +6,6 @@
     "db_migrate": "bundle exec rake db:migrate",
     "rspec": "yarn run db_migrate; bundle exec rspec",
     "rubocop": "bundle exec rubocop",
-    "test": "yarn run rubocop -s; yarn run rspec -s"
+    "test": "yarn run rubocop -s && yarn run rspec -s"
   }
 }
