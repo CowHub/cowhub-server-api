@@ -19,18 +19,13 @@ database:
     - mv config/database.yml config/database.yml.backup
 
 dependencies:
-  override:
-    - wget https://yarnpkg.com/install.sh
-    - chmod +x install.sh
-    - ./install.sh
-    - gem install bundler
-    - bundle install
+  post:
     - mkdir -p s3 && docker run -itd -v $(pwd)/s3:/fakes3_root -p 4569:4569 lphoward/fake-s3
     - pip install awsebcli
 
 test:
   override:
-    - yarn test
+    - bundle exec rake test
 
 deployment:
   production:
