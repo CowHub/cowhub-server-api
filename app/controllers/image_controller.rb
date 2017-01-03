@@ -4,14 +4,11 @@ class ImageController < ApplicationController
   def index
     cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
-      images = cattle.image
       images_base64 = []
-      images.each do | i |
-        i.base64 = $s3.get_object(
-          bucket: 'cowhub-production-images',
-          key: i.image_uri
-        )
-        images_base64.append(i)
+      cattle.image.each do | i |
+        images_base64.append(
+          $s3.get_object(bucket: 'cowhub-production-images',
+                         key: i.image_uri).body.read)
       end
       render json: {
         images: images_base64
