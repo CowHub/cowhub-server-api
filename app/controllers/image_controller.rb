@@ -26,14 +26,15 @@ class ImageController < ApplicationController
     if params[:data].nil? || params[:data].empty?
       render status: :bad_request
     elsif cattle
-      image_uri = "cattle/#{current_user.id}/#{cattle.id}/image-original"
+      image = cattle.image.create(image_uri: 'temporary')
+      image_uri = "cattle/#{current_user.id}/#{cattle.id}/#{image.id}-image-original"
       $s3.put_object(
         acl: 'private',
         body: params[:data],
         bucket: 'cowhub-production-images',
         key: image_uri
       )
-      image = cattle.image.create(image_uri: image_uri)
+      image.image_uri = image_uri
       if image.valid?
         image.save
         render json: { image: image }, status: :ok
