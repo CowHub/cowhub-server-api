@@ -4,17 +4,18 @@ class ImageController < ApplicationController
   def index
     cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
-      images_base64 = []
+      images = []
       cattle.image.each do |i|
-        images_base64.append(
-          $s3.get_object(
+        images.append(
+          id: i.id,
+          data: $s3.get_object(
             bucket: 'cowhub-production-images',
             key: i.image_uri
           ).body.read
         )
       end
       render json: {
-        images: images_base64
+        images: images
       }, status: :ok
     else
       render json: {}, status: :not_found
@@ -37,7 +38,7 @@ class ImageController < ApplicationController
       image.image_uri = image_uri
       if image.valid?
         image.save
-        render json: { image: image }, status: :ok
+        render json: { id: image.id }, status: :ok
       else
         render json: { errors: image.errors.full_messages }, status: :bad_request
       end
