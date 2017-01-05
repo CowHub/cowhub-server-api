@@ -36,19 +36,28 @@ RSpec.describe MatchController, type: :controller do
     it 'is still unprocessed returns ok' do
       match = FactoryGirl.create(:match, user_id: @user.id)
       get :show, params: { id: match.id }
-      expect(response).to have_http_status(:success)
+      body = JSON.parse response.body
+
+      expect(response).to have_http_status(:ok)
+      expect(body['pending']).to_not be(true)
     end
 
-    it 'did not match any cattle returns not found error' do
+    it 'did not match any cattle returns found false' do
       match = FactoryGirl.create(:match, status: 'not_found')
       get :show, params: { id: match.id }
-      expect(response).to have_http_status(:not_found)
+      body = JSON.parse response.body
+
+      expect(response).to have_http_status(:ok)
+      expect(body['found']).to_not be(false)
     end
 
-    it 'matched unregistered returns not found error' do
+    it 'matched unregistered returns lost true' do
       match = FactoryGirl.create(:match, status: 'found')
       get :show, params: { id: match.id }
-      expect(response).to have_http_status(:not_found)
+      body = JSON.parse response.body
+
+      expect(response).to have_http_status(:ok)
+      expect(body['lost']).to_not be(true)
     end
 
     it 'matched cattle returns cattle' do
