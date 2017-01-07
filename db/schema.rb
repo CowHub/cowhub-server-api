@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170107143706) do
+ActiveRecord::Schema.define(version: 20161202171000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 20170107143706) do
     t.string  "gender"
     t.date    "dob"
     t.integer "user_id"
-    t.string  "biometric_imprint"
     t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
   end
 

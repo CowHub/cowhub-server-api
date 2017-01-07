@@ -4,7 +4,6 @@ class Cattle < ActiveRecord::Base
 
   before_save :before_save
 
-  validates :biometric_imprint, presence: true
   validates :country_code, presence: true,
                            length: { is: 2 },
                            format: { with: /[A-Za-z]{2}/ }
@@ -47,7 +46,7 @@ class Cattle < ActiveRecord::Base
       bucket: 'cowhub-production-images',
       key: image_uri
     )
-    self.biometric_imprint = image_uri
+    image_uri
   end
 
   def add_image(data)

@@ -6,6 +6,9 @@ class CattleController < ApplicationController
   end
 
   def new
+    unless params[:muzzle_image]
+      render json: { errors: ['No muzzle image provided'] }, status: :bad_request
+    end
     cattle = current_user.cattle.create(params.permit(Cattle.column_names))
     cattle.set_biometric_imprint(params[:muzzle_image])
     cattle.add_image(params[:body_image]) if params[:body_image]
