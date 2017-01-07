@@ -25,7 +25,7 @@ class Cattle < ActiveRecord::Base
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
   end
 
-  def biometric_imprint(data)
+  def imprint(data)
     imprint = biometric_imprint.create(image_uri: 'temporary')
     image_uri = "cattle/#{user.id}/#{id}/#{imprint.id}-imprint-original"
     $s3.put_object(
