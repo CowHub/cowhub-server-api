@@ -6,18 +6,12 @@ class CattleController < ApplicationController
   end
 
   def new
-    if params[:muzzle_image]
-      cattle = current_user.cattle.create(params.permit(Cattle.column_names))
-      cattle.set_biometric_imprint(params[:muzzle_image])
-      cattle.add_image(params[:body_image]) if params[:body_image]
-      if cattle.valid?
-        cattle.save
-        render json: { cattle: cattle }, status: :created
-      else
-        render json: { errors: cattle.errors.full_messages }, status: :bad_request
-      end
+    cattle = current_user.cattle.create(params.permit(Cattle.column_names))
+    if cattle.valid?
+      cattle.save
+      render json: { cattle: cattle }, status: :created
     else
-      render json: { errors: ['No muzzle image provided'] }, status: :bad_request
+      render json: { errors: cattle.errors.full_messages }, status: :bad_request
     end
   end
 
