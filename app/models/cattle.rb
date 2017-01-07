@@ -1,7 +1,7 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
   has_many :biometric_imprint, dependent: :destroy
-  has_many :image, dependent: :destroy
+  has_many :profile_picture, dependent: :destroy
 
   before_save :before_save
 
@@ -40,7 +40,7 @@ class Cattle < ActiveRecord::Base
   end
 
   def add_image(data)
-    profile = image.create(image_uri: 'temporary')
+    profile = profile_picture.create(image_uri: 'temporary')
     image_uri = "cattle/#{user.id}/#{id}/#{profile.id}-profile-original"
     $s3.put_object(
       acl: 'private',
@@ -55,7 +55,7 @@ class Cattle < ActiveRecord::Base
 
   def images
     images = []
-    image.each do |i|
+    profile_picture.each do |i|
       images.append(
         id: i.id,
         data: $s3.get_object(
