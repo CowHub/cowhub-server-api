@@ -3,7 +3,6 @@ require 'faker'
 FactoryGirl.define do
   factory :cattle do
     user_id { FactoryGirl.create(:user).id }
-    biometric_imprint 'cattle/42/biometric-imprint-original'
     country_code 'UK'
     herdmark { format('%06d', Faker::Number.between(1, 999_999)) }
     check_digit { Faker::Number.between(1, 9) }

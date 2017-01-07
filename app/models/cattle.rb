@@ -24,20 +24,6 @@ class Cattle < ActiveRecord::Base
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
   end
 
-  def get_images
-    images = []
-    image.each do |i|
-      images.append(
-        id: i.id,
-        data: $s3.get_object(
-          bucket: 'cowhub-production-images',
-          key: i.image_uri
-        ).body.read
-      )
-    end
-    images
-  end
-
   def set_biometric_imprint(data)
     image_uri = "cattle/#{id}/biometric-imprint-original"
     $s3.put_object(
@@ -60,6 +46,20 @@ class Cattle < ActiveRecord::Base
     )
     new_image.image_uri = image_uri
     new_image
+  end
+
+  def get_images
+    images = []
+    image.each do |i|
+      images.append(
+        id: i.id,
+        data: $s3.get_object(
+          bucket: 'cowhub-production-images',
+          key: i.image_uri
+        ).body.read
+      )
+    end
+    images
   end
 
   def to_json
