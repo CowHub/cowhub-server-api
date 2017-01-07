@@ -1,4 +1,4 @@
-class Image < ApplicationRecord
+class BiometricImprint < ApplicationRecord
   belongs_to :cattle
 
   validates :cattle, presence: true

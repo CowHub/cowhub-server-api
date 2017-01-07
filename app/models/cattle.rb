@@ -1,5 +1,6 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
+  has_many :biometric_imprint, dependent: :destroy
   has_many :image, dependent: :destroy
 
   before_save :before_save
@@ -25,27 +26,31 @@ class Cattle < ActiveRecord::Base
   end
 
   def biometric_imprint(data)
-    image_uri = "cattle/#{id}/biometric-imprint-original"
+    imprint = biometric_imprint.create(image_uri: 'temporary')
+    image_uri = "cattle/#{user.id}/#{id}/#{imprint.id}-imprint-original"
     $s3.put_object(
       acl: 'private',
       body: data,
       bucket: 'cowhub-production-images',
       key: image_uri
     )
-    image_uri
+    imprint.image_uri = image_uri
+    imprint.save
+    imprint
   end
 
   def add_image(data)
-    new_image = image.create(image_uri: 'temporary')
-    image_uri = "cattle/#{id}/#{new_image.id}-image-original"
+    profile = image.create(image_uri: 'temporary')
+    image_uri = "cattle/#{user.id}/#{id}/#{profile.id}-profile-original"
     $s3.put_object(
       acl: 'private',
       body: data,
       bucket: 'cowhub-production-images',
       key: image_uri
     )
-    new_image.image_uri = image_uri
-    new_image
+    profile.image_uri = image_uri
+    profile.save
+    profile
   end
 
   def images

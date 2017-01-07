@@ -17,7 +17,6 @@ class ImageController < ApplicationController
     elsif cattle
       image = cattle.add_image(params[:data])
       if image.valid?
-        image.save
         render json: { id: image.id }, status: :ok
       else
         render json: { errors: image.errors.full_messages }, status: :bad_request
