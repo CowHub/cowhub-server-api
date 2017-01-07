@@ -25,7 +25,8 @@ dependencies:
 
 test:
   override:
-    - bundle exec rake test
+    - bundle exec rspec
+    - bundle exec rubocop
 
 deployment:
   production:
