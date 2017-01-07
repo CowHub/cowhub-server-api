@@ -24,6 +24,33 @@ class Cattle < ActiveRecord::Base
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
   end
 
+  def get_images
+    images = []
+    image.each do |i|
+      images.append(
+        id: i.id,
+        data: $s3.get_object(
+          bucket: 'cowhub-production-images',
+          key: i.image_uri
+        ).body.read
+      )
+    end
+    images
+  end
+
+  def add_image(data)
+    new_image = image.create(image_uri: 'temporary')
+    image_uri = "cattle/#{user.id}/#{id}/#{new_image.id}-image-original"
+    $s3.put_object(
+      acl: 'private',
+      body: data,
+      bucket: 'cowhub-production-images',
+      key: image_uri
+    )
+    new_image.image_uri = image_uri
+    new_image
+  end
+
   def to_json
     {
       tag: generate_tag,
