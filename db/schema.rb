@@ -15,14 +15,6 @@ ActiveRecord::Schema.define(version: 20170107225321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "biometric_imprints", force: :cascade do |t|
-    t.integer  "cattle_id"
-    t.string   "image_uri"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cattle_id"], name: "index_biometric_imprints_on_cattle_id", using: :btree
-  end
-
   create_table "cattle", force: :cascade do |t|
     t.string  "country_code"
     t.string  "herdmark"
@@ -36,6 +28,14 @@ ActiveRecord::Schema.define(version: 20170107225321) do
     t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
   end
 
+  create_table "imprints_images", force: :cascade do |t|
+    t.integer  "cattle_id"
+    t.string   "image_uri"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cattle_id"], name: "index_imprints_images_on_cattle_id", using: :btree
+  end
+
   create_table "matches", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "cattle_id"
@@ -47,12 +47,12 @@ ActiveRecord::Schema.define(version: 20170107225321) do
     t.index ["user_id"], name: "index_matches_on_user_id", using: :btree
   end
 
-  create_table "profile_pictures", force: :cascade do |t|
+  create_table "profile_images", force: :cascade do |t|
     t.integer  "cattle_id"
     t.string   "image_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cattle_id"], name: "index_profile_pictures_on_cattle_id", using: :btree
+    t.index ["cattle_id"], name: "index_profile_images_on_cattle_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,9 +73,9 @@ ActiveRecord::Schema.define(version: 20170107225321) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
-  add_foreign_key "biometric_imprints", "cattle"
   add_foreign_key "cattle", "users"
+  add_foreign_key "imprints_images", "cattle"
   add_foreign_key "matches", "cattle"
   add_foreign_key "matches", "users"
-  add_foreign_key "profile_pictures", "cattle"
+  add_foreign_key "profile_images", "cattle"
 end

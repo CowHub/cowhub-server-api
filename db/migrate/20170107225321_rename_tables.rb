@@ -1,6 +1,6 @@
 class RenameTables < ActiveRecord::Migration[5.0]
   def change
-    rename_table :biometric_imprints, :profile_pictures
-    rename_table :images, :biometric_imprints
+    rename_table :biometric_imprints, :profile_images
+    rename_table :images, :imprints_images
   end
 end

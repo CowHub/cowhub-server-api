@@ -1,7 +1,7 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
-  has_many :biometric_imprint, dependent: :destroy
-  has_many :profile_picture, dependent: :destroy
+  has_many :imprint_image, dependent: :destroy
+  has_many :profile_image, dependent: :destroy
 
   before_save :before_save
 
@@ -25,8 +25,8 @@ class Cattle < ActiveRecord::Base
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
   end
 
-  def imprint(data)
-    imprint = biometric_imprint.create(image_uri: 'temporary')
+  def push_imprint_image(data)
+    imprint = imprint_image.create(image_uri: 'temporary')
     image_uri = "cattle/#{user.id}/#{id}/#{imprint.id}-imprint-original"
     $s3.put_object(
       acl: 'private',
@@ -39,8 +39,8 @@ class Cattle < ActiveRecord::Base
     imprint
   end
 
-  def add_image(data)
-    profile = profile_picture.create(image_uri: 'temporary')
+  def push_profile_image(data)
+    profile = profile_image.create(image_uri: 'temporary')
     image_uri = "cattle/#{user.id}/#{id}/#{profile.id}-profile-original"
     $s3.put_object(
       acl: 'private',
@@ -53,9 +53,9 @@ class Cattle < ActiveRecord::Base
     profile
   end
 
-  def images
+  def profile_images
     images = []
-    profile_picture.each do |i|
+    profile_image.each do |i|
       images.append(
         id: i.id,
         data: $s3.get_object(

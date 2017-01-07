@@ -4,7 +4,7 @@ RSpec.describe MatchController, type: :controller do
   before(:all) do
     @user = FactoryGirl.create(:user)
     @cattle = FactoryGirl.create(:cattle, user_id: @user.id)
-    FactoryGirl.create_list(:profile_picture, 20, cattle_id: @cattle.id)
+    FactoryGirl.create_list(:profile_image, 20, cattle_id: @cattle.id)
     @auth_token = @user.generate_token
   end
 
