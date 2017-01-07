@@ -4,6 +4,7 @@ class Cattle < ActiveRecord::Base
 
   before_save :before_save
 
+  validates :biometric_imprint, presence: true
   validates :country_code, presence: true,
                            length: { is: 2 },
                            format: { with: /[A-Za-z]{2}/ }
@@ -38,9 +39,20 @@ class Cattle < ActiveRecord::Base
     images
   end
 
+  def set_biometric_imprint(data)
+    image_uri = "cattle/#{id}/biometric-imprint-original"
+    $s3.put_object(
+      acl: 'private',
+      body: data,
+      bucket: 'cowhub-production-images',
+      key: image_uri
+    )
+    self.biometric_imprint = image_uri
+  end
+
   def add_image(data)
     new_image = image.create(image_uri: 'temporary')
-    image_uri = "cattle/#{user.id}/#{id}/#{new_image.id}-image-original"
+    image_uri = "cattle/#{id}/#{new_image.id}-image-original"
     $s3.put_object(
       acl: 'private',
       body: data,
