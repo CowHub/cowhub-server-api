@@ -8,7 +8,7 @@ class CattleController < ApplicationController
   def new
     if params[:muzzle_image]
       cattle = current_user.cattle.create(params.permit(Cattle.column_names))
-      cattle.set_biometric_imprint(params[:muzzle_image])
+      cattle.biometric_imprint(params[:muzzle_image])
       cattle.add_image(params[:body_image]) if params[:body_image]
       if cattle.valid?
         cattle.save

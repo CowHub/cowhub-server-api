@@ -4,7 +4,7 @@ class ImageController < ApplicationController
   def index
     cattle = current_user.cattle.find_by(id: params[:id])
     if cattle
-      render json: { images: cattle.get_images }, status: :ok
+      render json: { images: cattle.images }, status: :ok
     else
       render json: {}, status: :not_found
     end
