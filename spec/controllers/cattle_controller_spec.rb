@@ -34,14 +34,14 @@ RSpec.describe CattleController, type: :controller do
   describe 'POST #new' do
     it 'post registration of unregistered tags' do
       params = FactoryGirl.attributes_for(:cattle)
-      params[:profile_image] = SecureRandom.base64
+      params[:imprint_image] = SecureRandom.base64
       post :new, params: params
       expect(response).to have_http_status(:created)
     end
 
     it 'post registration of unregistered tags with extra detail' do
       params = FactoryGirl.attributes_for(:cattle_extended)
-      params[:profile_image] = SecureRandom.base64
+      params[:imprint_image] = SecureRandom.base64
       post :new, params: params
       expect(response).to have_http_status(:created)
     end
