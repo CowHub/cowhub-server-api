@@ -18,8 +18,9 @@ class LambdaController < ApplicationController
     if match && params[:image_id] && params[:value]
       match.results += 1
       current_value = match.value
-      if params[:value] < current_value
-        match.image_id = params[:image_id]
+      image = ImprintImage.find_by(id: image_id)
+      if params[:value] < current_value && image
+        match.image = image
         match.value = params[:value]
         match.save
       end
