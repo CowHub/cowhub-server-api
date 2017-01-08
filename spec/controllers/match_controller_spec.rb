@@ -4,6 +4,7 @@ RSpec.describe MatchController, type: :controller do
   before(:all) do
     @user = FactoryGirl.create(:user)
     @cattle = FactoryGirl.create(:cattle, user_id: @user.id)
+    @image = FactoryGirl.create()
     FactoryGirl.create_list(:profile_image, 20, cattle_id: @cattle.id)
     @auth_token = @user.generate_token
   end
@@ -61,7 +62,7 @@ RSpec.describe MatchController, type: :controller do
     end
 
     it 'matched cattle returns cattle' do
-      match = FactoryGirl.create(:match, user_id: @user.id, cattle_id: @cattle.id, status: 'found')
+      match = FactoryGirl.create(:match, user_id: @user.id, image_id: @image.id, status: 'found')
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
