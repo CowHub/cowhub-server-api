@@ -64,8 +64,6 @@ RSpec.describe MatchController, type: :controller do
     it 'matched cattle returns cattle' do
       match = FactoryGirl.create(:match, user_id: @user.id, imprint_image_id: @image.id, status: 'found')
       get :show, params: { id: match.id }
-      body = JSON.parse response.body
-
       expect(response).to have_http_status(:success)
     end
   end
