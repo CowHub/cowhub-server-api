@@ -15,7 +15,7 @@ class ImageController < ApplicationController
     if params[:data].nil? || params[:data].empty?
       render status: :bad_request
     elsif cattle
-      image = cattle.push_profile_image(params[:data])
+      image = cattle.profile_image.create(image: params[:data])
       if image.valid?
         render json: { id: image.id }, status: :ok
       else

@@ -25,34 +25,6 @@ class Cattle < ActiveRecord::Base
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
   end
 
-  def push_imprint_image(data)
-    imprint = imprint_image.create(image_uri: 'temporary')
-    image_uri = "cattle/#{user.id}/#{id}/#{imprint.id}-imprint-original"
-    $s3.put_object(
-      acl: 'private',
-      body: data,
-      bucket: 'cowhub-production-images',
-      key: image_uri
-    )
-    imprint.image_uri = image_uri
-    imprint.save
-    imprint
-  end
-
-  def push_profile_image(data)
-    profile = profile_image.create(image_uri: 'temporary')
-    image_uri = "cattle/#{user.id}/#{id}/#{profile.id}-profile-original"
-    $s3.put_object(
-      acl: 'private',
-      body: data,
-      bucket: 'cowhub-production-images',
-      key: image_uri
-    )
-    profile.image_uri = image_uri
-    profile.save
-    profile
-  end
-
   def profile_images
     images = []
     profile_image.each do |i|
