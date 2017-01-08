@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   # Image management
   get    '/cattle/:id/images/', to: 'image#index'
+  get    '/cattle/image/:id',   to: 'image#show'
   post   '/cattle/:id/images/', to: 'image#upload'
 
   # Match management
