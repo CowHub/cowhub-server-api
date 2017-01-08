@@ -6,10 +6,10 @@ class CattleController < ApplicationController
   end
 
   def new
-    if params[:muzzle_image]
+    if params[:imprint_image]
       cattle = current_user.cattle.create(params.permit(Cattle.column_names))
-      cattle.push_imprint_image(params[:muzzle_image])
-      cattle.push_profile_image(params[:body_image]) if params[:body_image]
+      cattle.push_imprint_image(params[:imprint_image])
+      cattle.push_profile_image(params[:profile_image]) if params[:body_image]
       if cattle.valid?
         cattle.save
         render json: { cattle: cattle }, status: :created
