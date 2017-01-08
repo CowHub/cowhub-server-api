@@ -2,30 +2,39 @@ class LambdaController < ApplicationController
   def match_count
     # Params: id, count
     match = Match.find_by(id: params[:id])
-    if match && params[:count]
+    if match
       match.count = params[:count]
-      match.save
-      render status: :ok
+      if match.valid?
+        match.save
+        render status: :ok
+      else
+        render json: { error: match.errors.full_messages }, status: :bad_request
+      end
     else
-      render status: :bad_request
+      render status: :not_found
     end
   end
 
   def match_result
     # Params: id, value, image_id
     match = match.Match.find_by(id: params[:id])
-    if match && params[:image_id] && params[:value]
+    if match
       match.results += 1
+      match.save
       current_value = match.value
       image = ImprintImage.find_by(id: image_id)
       if params[:value] < current_value && image
         match.image = image
         match.value = params[:value]
-        match.save
       end
-      render status: :ok
+      if match.valid?
+        match.save
+        render status: :ok
+      else
+        render json: { error: match.errors.full_messages }, status: :bad_request
+      end
     else
-      render status: :bad_request
+      render status: :not_found
     end
   end
 end
