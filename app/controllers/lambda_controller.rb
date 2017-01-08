@@ -1,5 +1,4 @@
 class LambdaController < ApplicationController
-
   def match_count
     # Params: id, count
     match = Match.find_by(id: params[:id])
@@ -29,5 +28,4 @@ class LambdaController < ApplicationController
       render status: :bad_request
     end
   end
-
 end
