@@ -36,9 +36,8 @@ class MatchController < ApplicationController
         render json: { found: false }, status: :ok
       when 'found'
         image = ImprintImage.find_by(id: params[:image_id])
-        cattle = Cattle.find_by(id: image.cattle_id)
-        if image && cattle
-          render json: { found: true, cattle: cattle }, status: :ok
+        if image && image.cattle
+          render json: { found: true, cattle: image.cattle }, status: :ok
         else
           # Match found against lost cattle
           render json: { lost: true }, status: :ok
