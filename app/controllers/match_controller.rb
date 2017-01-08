@@ -25,11 +25,10 @@ class MatchController < ApplicationController
 
   def show
     match = current_user.match.find_by(id: params[:id])
+    if match && match.results == match.count
+      match.status = 'not_found' if match.value == -1 else 'found'
+    end
     if match
-      if match.results == match.count
-        match.status = 'not_found' if match.value == -1 else 'found'
-      end
-
       case match.status
       when 'pending'
         render json: { pending: true }, status: :ok
