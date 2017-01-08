@@ -7,7 +7,7 @@ class MatchController < ApplicationController
       return
     end
     match = current_user.match.create!(image_uri: 'temporary')
-    image_uri = "match/#{current_user.id}/#{match.id}/image-original"
+    image_uri = "match/#{current_user.id}/#{match.id}-image-original"
     $s3.put_object(
       acl: 'private',
       body: params[:data],
@@ -25,6 +25,9 @@ class MatchController < ApplicationController
 
   def show
     match = current_user.match.find_by(id: params[:id])
+    if match && match.results == match.count
+      match.status = 'not_found' if match.value == -1 else 'found'
+    end
     if match
       case match.status
       when 'pending'
@@ -32,9 +35,9 @@ class MatchController < ApplicationController
       when 'not_found'
         render json: { found: false }, status: :ok
       when 'found'
-        cattle = Cattle.find_by(id: match.cattle_id)
-        if cattle
-          render json: { cattle: cattle }, status: :ok
+        image = ImprintImage.find_by(id: params[:image_id])
+        if image && image.cattle
+          render json: { found: true, cattle: image.cattle }, status: :ok
         else
           # Match found against lost cattle
           render json: { lost: true }, status: :ok

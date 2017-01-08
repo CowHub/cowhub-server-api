@@ -18,6 +18,10 @@ Metrics/AbcSize:
   Max: 30
 Metrics/LineLength:
   Max: 120
+Metrics/CyclomaticComplexity:
+  Max: 30
+Metrics/PerceivedComplexity:
+  Max: 30
 MethodLength:
   Max: 30
 BlockLength:

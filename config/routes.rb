@@ -21,8 +21,10 @@ Rails.application.routes.draw do
   post   '/cattle/:id/images/', to: 'image#upload'
 
   # Match management
-  post   '/cattle/match',       to: 'match#new'
-  get    '/cattle/match/:id',   to: 'match#show'
+  post   '/cattle/match',                   to: 'match#new'
+  get    '/cattle/match/:id',               to: 'match#show'
+  post   '/cattle/match/:id/lambda',        to: 'lambda#match_result'
+  post   '/cattle/match/:id/lambda/count',  to: 'lambda#match_count'
 
   # Health check
   get '/health', to: 'health#index'
