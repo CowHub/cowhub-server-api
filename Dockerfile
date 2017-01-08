@@ -7,5 +7,6 @@ RUN bundle install
 
 COPY . .
 
+ENV RAILS_PORT 8080
 EXPOSE 8080
-CMD [ "bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "8080" ]
+CMD [ "/bin/bash", "-c", "/app/deploy.sh" ]

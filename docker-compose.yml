@@ -7,7 +7,7 @@ services:
       - ./data:/var/lib/postgres/data
   api:
     build: .
-    command: /bin/bash -c "sleep 5 && rm -rf /app/tmp ; bundle exec rake db:setup && rails s -p 8080"
+    command: /bin/bash -c "/app/deploy.sh"
     environment:
       - RAILS_ENV=development
       - POSTGRES_USER=postgres
