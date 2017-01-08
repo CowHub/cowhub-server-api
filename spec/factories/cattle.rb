@@ -11,8 +11,13 @@ FactoryGirl.define do
 
   factory :cattle_extended, parent: :cattle do
     name { Faker::Name.name }
-    breed { Faker::Hacker.noun }
+    breed 'BRO'
     gender 'female'
     dob Date.today
+    genetic_dam 'UK190996300208'
+    surrogate_dam 'UK190996300208'
+    sir_dam 'UK190996400143'
+    latitude { Faker::Address.latitude }
+    longitude { Faker::Address.longitude }
   end
 end

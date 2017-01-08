@@ -95,8 +95,8 @@ RSpec.describe CattleController, type: :controller do
     it 'put update to registered cattle updates info returns http success' do
       cattle = FactoryGirl.create(:cattle, user_id: @user.id)
       put :update, params: {
-        id: cattle.id, name: 'Daisy', breed: 'Wagyu',
-        gender: 'female', dob: Date.today
+        id: cattle.id, name: 'Daisy', gender: 'female',
+        breed: 'KIWI', dob: Date.today
       }
       expect(response).to have_http_status(:ok)
     end
