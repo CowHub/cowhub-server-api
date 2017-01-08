@@ -46,7 +46,7 @@ RSpec.describe CattleController, type: :controller do
       expect(response).to have_http_status(:created)
     end
 
-    it 'post registration of unregistered tags' do
+    it 'post registration without muzzle image' do
       post :new, params: FactoryGirl.attributes_for(:cattle)
       expect(response).to have_http_status(:bad_request)
     end
