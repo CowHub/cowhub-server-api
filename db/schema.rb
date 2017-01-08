@@ -21,10 +21,15 @@ ActiveRecord::Schema.define(version: 20170108192707) do
     t.integer "check_digit"
     t.integer "individual_number"
     t.string  "name"
-    t.string  "breed"
-    t.string  "gender"
+    t.integer "breed"
+    t.integer "gender"
     t.date    "dob"
     t.integer "user_id"
+    t.string  "genetic_dam"
+    t.string  "surrogate_dam"
+    t.string  "sir_dam"
+    t.float   "latitude"
+    t.float   "longitude"
     t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
   end
 
