@@ -6,7 +6,12 @@ class Cattle < ActiveRecord::Base
   before_save :before_save
 
   enum gender: %w(male female)
-  enum breed: %w(AA AB ALL AR AN AM AU AY BRO BAZ BEL BSH BD BG BWB BI BA BAL BLG BR BP BRB BF BW BS CH CHI CHL CW DR DS DEV DEX DZE EFB EP ER FKV FE GAS GA GAY GE GL GB GU HK HE HI HO HF HS IM JE KE KIWI LV LIM LR LH LU MA MAL MAR MRI MO MG NO NDS NR OE OD PA PI PIN RP RE RG RO ROT SA SH SHO SM SD SP ST SR SRP SRW SB SOB SG SU TB TT VN VA WA BU WB WW WG WS WP YK ZE)
+  enum breed: %w(AA AB ALL AR AN AM AU AY BRO BAZ BEL BSH BD BG BWB BI BA BAL
+                 BLG BR BP BRB BF BW BS CH CHI CHL CW DR DS DEV DEX DZE EFB EP
+                 ER FKV FE GAS GA GAY GE GL GB GU HK HE HI HO HF HS IM JE KE
+                 KIWI LV LIM LR LH LU MA MAL MAR MRI MO MG NO NDS NR OE OD PA
+                 PI PIN RP RE RG RO ROT SA SH SHO SM SD SP ST SR SRP SRW SB SOB
+                 SG SU TB TT VN VA WA BU WB WW WG WS WP YK ZE)
 
   validates :country_code, presence: true,
                            length: { is: 2 },
