@@ -4,7 +4,7 @@ RSpec.describe MatchController, type: :controller do
   before(:all) do
     @user = FactoryGirl.create(:user)
     @cattle = FactoryGirl.create(:cattle, user_id: @user.id)
-    FactoryGirl.create_list(:image, 20, cattle_id: @cattle.id)
+    FactoryGirl.create_list(:profile_image, 20, cattle_id: @cattle.id)
     @auth_token = @user.generate_token
   end
 
@@ -39,25 +39,25 @@ RSpec.describe MatchController, type: :controller do
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:ok)
-      expect(body['pending']).to_not be(true)
+      expect(body['pending']).to be(true)
     end
 
     it 'did not match any cattle returns found false' do
-      match = FactoryGirl.create(:match, status: 'not_found')
+      match = FactoryGirl.create(:match, user_id: @user.id, status: 'not_found')
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:ok)
-      expect(body['found']).to_not be(false)
+      expect(body['found']).to be(false)
     end
 
     it 'matched unregistered returns lost true' do
-      match = FactoryGirl.create(:match, status: 'found')
+      match = FactoryGirl.create(:match, user_id: @user.id, status: 'found')
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
       expect(response).to have_http_status(:ok)
-      expect(body['lost']).to_not be(true)
+      expect(body['lost']).to be(true)
     end
 
     it 'matched cattle returns cattle' do

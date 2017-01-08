@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202171000) do
+ActiveRecord::Schema.define(version: 20170108004449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,12 +28,12 @@ ActiveRecord::Schema.define(version: 20161202171000) do
     t.index ["user_id"], name: "index_cattle_on_user_id", using: :btree
   end
 
-  create_table "images", force: :cascade do |t|
+  create_table "imprints_images", force: :cascade do |t|
     t.integer  "cattle_id"
-    t.string   "image_uri"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cattle_id"], name: "index_images_on_cattle_id", using: :btree
+    t.string   "image_uri",  default: "temporary"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["cattle_id"], name: "index_imprints_images_on_cattle_id", using: :btree
   end
 
   create_table "matches", force: :cascade do |t|
@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(version: 20161202171000) do
     t.datetime "updated_at",             null: false
     t.index ["cattle_id"], name: "index_matches_on_cattle_id", using: :btree
     t.index ["user_id"], name: "index_matches_on_user_id", using: :btree
+  end
+
+  create_table "profile_images", force: :cascade do |t|
+    t.integer  "cattle_id"
+    t.string   "image_uri",  default: "temporary"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["cattle_id"], name: "index_profile_images_on_cattle_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -66,7 +74,8 @@ ActiveRecord::Schema.define(version: 20161202171000) do
   end
 
   add_foreign_key "cattle", "users"
-  add_foreign_key "images", "cattle"
+  add_foreign_key "imprints_images", "cattle"
   add_foreign_key "matches", "cattle"
   add_foreign_key "matches", "users"
+  add_foreign_key "profile_images", "cattle"
 end

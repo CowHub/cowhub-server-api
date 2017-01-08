@@ -1,6 +1,7 @@
 class Cattle < ActiveRecord::Base
   belongs_to :user
-  has_many :image, dependent: :destroy
+  has_many :imprint_image, dependent: :destroy
+  has_many :profile_image, dependent: :destroy
 
   before_save :before_save
 
@@ -22,6 +23,20 @@ class Cattle < ActiveRecord::Base
 
   def generate_tag
     "#{country_code}#{herdmark}#{check_digit}#{format('%05d', individual_number)}"
+  end
+
+  def profile_images
+    images = []
+    profile_image.each do |i|
+      images.append(
+        id: i.id,
+        data: $s3.get_object(
+          bucket: 'cowhub-production-images',
+          key: i.image_uri
+        ).body.read
+      )
+    end
+    images
   end
 
   def to_json
