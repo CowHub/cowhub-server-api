@@ -23,10 +23,10 @@ Rails.application.routes.draw do
   # Match management
   post   '/cattle/match',       to: 'match#new'
   get    '/cattle/match/:id',   to: 'match#show'
-  
+
   # Health check
   get '/health', to: 'health#index'
   get '/health/login', to: 'health#login_placeholder'
 
-  root to: redirect('//cloud-vm-46-70.doc.ic.ac.uk:80')
+  root to: redirect('//cowhub.co.uk:80')
 end
