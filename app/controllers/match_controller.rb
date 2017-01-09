@@ -25,7 +25,8 @@ class MatchController < ApplicationController
 
   def show
     match = current_user.match.find_by(id: params[:id])
-    if match && match.results == match.count
+    puts "------- MATCH \n\n#{match.to_json}\n\n--------"
+    if match && match.results >= match.count
       match.status = 'not_found' if match.value == -1 else 'found'
     end
     if match
