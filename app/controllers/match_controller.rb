@@ -30,19 +30,21 @@ class MatchController < ApplicationController
       match.status = 'not_found' if match.value == -1 else 'found'
     end
     if match
+      response = { pending: nil, found: nil, lost: nil, cattle: nil }
       case match.status
       when 'pending'
-        render json: { pending: true }, status: :ok
+        response[:pending] = true
+        render json: response, status: :ok
       when 'not_found'
-        render json: { found: false }, status: :ok
+        response[:pending] = false
+        response[:found] = false
+        render json: response, status: :ok
       when 'found'
         image = ImprintImage.find_by(id: params[:image_id])
-        if image && image.cattle
-          render json: { found: true, cattle: image.cattle }, status: :ok
-        else
-          # Match found against lost cattle
-          render json: { lost: true }, status: :ok
-        end
+        response[:pending] = false
+        response[:found] = true
+        response[:lost] = image && image.cattle
+        render json: response, status: :ok
       else
         render status: :bad_request
       end
