@@ -21,10 +21,16 @@ class LambdaController < ApplicationController
     if match
       match.results += 1
       match.save
+
+      # No match found
+      if params[:value] == 'inf'
+        render status: :ok
+        return
+      end
       current_value = match.value
-      image = ImprintImage.find_by(id: image_id)
+      image = ImprintImage.find_by(id: params[:image_id])
       if params[:value] < current_value && image
-        match.image = image
+        match.imprint_image_id = image.id
         match.value = params[:value]
       end
       if match.valid?
