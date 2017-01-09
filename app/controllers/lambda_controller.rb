@@ -29,9 +29,9 @@ class LambdaController < ApplicationController
       end
       current_value = match.value
       image = ImprintImage.find_by(id: params[:image_id])
-      if params[:value] < current_value && image
+      if Float(params[:value]) < current_value && image
         match.imprint_image_id = image.id
-        match.value = params[:value]
+        match.value = Float(params[:value])
       end
       if match.valid?
         match.save
