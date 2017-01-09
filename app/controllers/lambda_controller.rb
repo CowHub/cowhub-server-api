@@ -29,7 +29,6 @@ class LambdaController < ApplicationController
         render status: :ok
         return
       end
-
       match.with_lock do
         current_value = match.value
         image = ImprintImage.find_by(id: params[:image_id])
