@@ -17,7 +17,7 @@ class LambdaController < ApplicationController
 
   def match_result
     # Params: id, value, image_id
-    match = match.Match.find_by(id: params[:id])
+    match = Match.find_by(id: params[:id])
     if match
       match.results += 1
       match.save
