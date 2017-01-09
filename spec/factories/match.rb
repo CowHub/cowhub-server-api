@@ -13,6 +13,11 @@ FactoryGirl.define do
       )
       image_uri
     end
-    status { 'pending' }
+  end
+
+  factory :match_found, parent: :match do
+    count 2
+    results 2
+    value { Faker::Number.number(5) }
   end
 end

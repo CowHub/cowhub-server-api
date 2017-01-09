@@ -25,12 +25,11 @@ class MatchController < ApplicationController
 
   def show
     match = current_user.match.find_by(id: params[:id])
-    puts "------- MATCH \n\n#{match.to_json}\n\n--------"
-    if match && match.results >= match.count
-      match.status = 'not_found' if match.value == -1 else 'found'
+    if match && match.count != -1 && match.results >= match.count
+      match.status = 'found' if match.value != -1 else 'not_found'
     end
     if match
-      response = { pending: nil, found: nil, lost: nil, cattle: nil }
+      response = { pending: nil, found: nil, cattle: nil }
       case match.status
       when 'pending'
         response[:pending] = true
@@ -40,10 +39,9 @@ class MatchController < ApplicationController
         response[:found] = false
         render json: response, status: :ok
       when 'found'
-        image = ImprintImage.find_by(id: params[:image_id])
         response[:pending] = false
         response[:found] = true
-        response[:lost] = image && image.cattle
+        response[:cattle] = match.cattle
         render json: response, status: :ok
       else
         render status: :bad_request
