@@ -31,21 +31,26 @@ RSpec.describe ImageController, type: :controller do
     end
   end
 
-  describe 'GET #index' do
-    it 'get image with id' do
-      get :show, params: { id: @image.id }
+  describe 'GET #show' do
+    it 'get image with valid ids' do
+      get :show, params: { cattle_id: @cattle.id, image_id: @image.id }
       expect(response).to have_http_status(:success)
     end
 
-    it 'get image with id' do
-      get :show, params: { id: (@image.id + 21) }
+    it 'get image with invalid cattle id' do
+      get :show, params: { cattle_id: (@cattle.id + 1), image_id: @image.id }
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'get image with invalid image id' do
+      get :show, params: { cattle_id: @cattle.id, image_id: (@image.id + 21) }
       expect(response).to have_http_status(:not_found)
     end
 
-    it 'get image with id' do
+    it 'get image with valid ids but no authorization' do
       cattle = FactoryGirl.create(:cattle, user_id: (@user.id + 1))
       image = FactoryGirl.create(:profile_image, cattle_id: cattle.id)
-      get :show, params: { id: image.id }
+      get :show, params: { cattle_id: cattle.id, image_id: image.id }
       expect(response).to have_http_status(:unauthorized)
     end
   end
