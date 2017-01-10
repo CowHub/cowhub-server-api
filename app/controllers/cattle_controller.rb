@@ -7,7 +7,7 @@ class CattleController < ApplicationController
 
   def new
     if params[:imprint_image]
-      cattle = current_user.cattle.create(params.permit(Cattle.column_names))
+      cattle = current_user.cattle.create(params[:cattle].permit(Cattle.column_names))
       cattle.imprint_image.create(image: params[:imprint_image])
       cattle.profile_image.create(image: params[:profile_image]) if params[:body_image]
       if cattle.valid?
