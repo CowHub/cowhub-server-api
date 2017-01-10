@@ -15,4 +15,14 @@ class ProfileImage < ApplicationRecord
     )
     save
   end
+
+  def fetch_image
+    {
+      id: id,
+      data: $s3.get_object(
+        bucket: 'cowhub-production-images',
+        key: image_uri
+      ).body.read
+    }
+  end
 end

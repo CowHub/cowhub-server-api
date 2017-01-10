@@ -17,8 +17,9 @@ Rails.application.routes.draw do
   delete '/cattle/:id',    to: 'cattle#destroy'
 
   # Image management
-  get    '/cattle/:id/images/', to: 'image#index'
-  post   '/cattle/:id/images/', to: 'image#upload'
+  get    '/cattle/:id/images/',                 to: 'image#index'
+  get    '/cattle/:cattle_id/image/:image_id',  to: 'image#show'
+  post   '/cattle/:id/images/',                 to: 'image#upload'
 
   # Match management
   post   '/cattle/match',                   to: 'match#new'

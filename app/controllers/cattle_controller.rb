@@ -9,7 +9,7 @@ class CattleController < ApplicationController
     if params[:imprint_image]
       cattle = current_user.cattle.create(params[:cattle].permit(Cattle.column_names))
       cattle.imprint_image.create(image: params[:imprint_image])
-      cattle.profile_image.create(image: params[:profile_image]) if params[:body_image]
+      cattle.profile_image.create(image: params[:profile_image]) if params[:profile_image]
       if cattle.valid?
         cattle.save
         render json: { cattle: cattle }, status: :created

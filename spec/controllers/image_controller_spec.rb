@@ -4,7 +4,7 @@ RSpec.describe ImageController, type: :controller do
   before(:all) do
     @user = FactoryGirl.create(:user)
     @cattle = FactoryGirl.create(:cattle, user_id: @user.id)
-    FactoryGirl.create_list(:profile_image, 20, cattle_id: @cattle.id)
+    @image = FactoryGirl.create_list(:profile_image, 20, cattle_id: @cattle.id)[0]
     @auth_token = @user.generate_token
   end
 
@@ -28,6 +28,30 @@ RSpec.describe ImageController, type: :controller do
 
       expect(response).to have_http_status(:success)
       expect(body['images'].length).to be(0)
+    end
+  end
+
+  describe 'GET #show' do
+    it 'get image with valid ids' do
+      get :show, params: { cattle_id: @cattle.id, image_id: @image.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'get image with invalid cattle id' do
+      get :show, params: { cattle_id: (@cattle.id + 1), image_id: @image.id }
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it 'get image with invalid image id' do
+      get :show, params: { cattle_id: @cattle.id, image_id: (@image.id + 21) }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'get image with valid ids but no authorization' do
+      cattle = FactoryGirl.create(:cattle, user_id: (@user.id + 1))
+      image = FactoryGirl.create(:profile_image, cattle_id: cattle.id)
+      get :show, params: { cattle_id: cattle.id, image_id: image.id }
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
