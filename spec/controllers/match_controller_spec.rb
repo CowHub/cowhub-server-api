@@ -35,7 +35,7 @@ RSpec.describe MatchController, type: :controller do
     end
 
     it 'is still unprocessed returns ok' do
-      match = FactoryGirl.create(:match, user_id: @user.id, status: 'pending')
+      match = FactoryGirl.create(:match, user_id: @user.id)
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
@@ -46,7 +46,7 @@ RSpec.describe MatchController, type: :controller do
     end
 
     it 'did not match any cattle returns found false' do
-      match = FactoryGirl.create(:match, user_id: @user.id, status: 'not_found')
+      match = FactoryGirl.create(:match_found, user_id: @user.id, value: -1)
       get :show, params: { id: match.id }
       body = JSON.parse response.body
 
@@ -55,17 +55,6 @@ RSpec.describe MatchController, type: :controller do
       expect(body['found']).to be(false)
       expect(body['cattle']).to be(nil)
     end
-
-    # it 'matched unregistered returns lost true' do
-    #   match = FactoryGirl.create(:match_found, user_id: @user.id, imprint_image_id: @cattle.imprint_image[0].id + 1)
-    #   get :show, params: { id: match.id }
-    #   body = JSON.parse response.body
-    #
-    #   expect(response).to have_http_status(:ok)
-    #   expect(body['pending']).to be(false)
-    #   expect(body['found']).to be(true)
-    #   expect(body['cattle']).to be(nil)
-    # end
 
     it 'matched cattle returns cattle' do
       match = FactoryGirl.create(:match_found, user_id: @user.id, imprint_image_id: @cattle.imprint_image[0].id)
