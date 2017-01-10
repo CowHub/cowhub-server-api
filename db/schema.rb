@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170108192707) do
+ActiveRecord::Schema.define(version: 20170110125957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,13 +44,13 @@ ActiveRecord::Schema.define(version: 20170108192707) do
   create_table "matches", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "image_uri"
-    t.integer  "status",           default: 0
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.float    "value",            default: -1.0
     t.integer  "count",            default: -1
     t.integer  "results",          default: 0
     t.integer  "imprint_image_id"
+    t.boolean  "stored"
     t.index ["imprint_image_id"], name: "index_matches_on_imprint_image_id", using: :btree
     t.index ["user_id"], name: "index_matches_on_user_id", using: :btree
   end
