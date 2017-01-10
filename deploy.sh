@@ -6,7 +6,6 @@ echo "-----------------------------------------------------------"
 env
 echo "-----------------------------------------------------------"
 
-bundle exec rake db:reset # TEMPORARY
 bundle exec rake db:setup || \
 echo "Database couldn't be setup. It already have initialised"
 
