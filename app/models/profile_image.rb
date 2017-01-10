@@ -1,6 +1,7 @@
 class ProfileImage < ApplicationRecord
   belongs_to :cattle
   after_create :push_image
+  before_destroy :delete_image_s3
 
   validates :image_uri, presence: true
   attr_accessor :image
@@ -24,5 +25,16 @@ class ProfileImage < ApplicationRecord
         key: image_uri
       ).body.read
     }
+  end
+
+  def delete_image_s3
+    begin
+      $s3.delete_object(
+        bucket: 'cowhub-production-images',
+        key: image_uri
+      )
+    rescue Error
+      puts "Couldn't delete image with ID #{id}"
+    end
   end
 end
