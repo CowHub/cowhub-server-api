@@ -42,7 +42,7 @@ class CattleController < ApplicationController
         cattle.save
         render json: { cattle: cattle }, status: :ok
       else
-        render json: { errors: cattle.errors.full_messages }, status: :ok
+        render json: { errors: cattle.errors.full_messages }, status: :bad_request
       end
     else
       render status: :not_found
