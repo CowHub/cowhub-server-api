@@ -14,6 +14,7 @@ class MatchController < ApplicationController
       bucket: 'cowhub-production-images',
       key: image_uri
     )
+    match.stored = true
     match.image_uri = image_uri
     unless match.valid?
       render json: { errors: match.errors.full_messages }, status: :bad_request
@@ -31,6 +32,14 @@ class MatchController < ApplicationController
         if match.count != -1 && match.results >= match.count
           response[:found] = match.value != -1
           response[:cattle] = match.cattle if response[:found]
+          if match.stored
+            $s3.delete_object(
+              bucket: 'cowhub-production-images',
+              key: match.image_uri
+            )
+            match.stored = false
+            match.save!
+          end
         else
           response[:pending] = true
         end
