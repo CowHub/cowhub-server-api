@@ -32,8 +32,8 @@ class LambdaController < ApplicationController
       match.with_lock do
         current_value = match.value
         image = ImprintImage.find_by(id: params[:image_id])
-        if current_value == -1 ||
-           (Float(params[:value]) < current_value && image)
+        if (current_value == -1 ||
+            Float(params[:value]) < current_value) && image
           match.imprint_image_id = image.id
           match.value = Float(params[:value])
         end

@@ -6,7 +6,7 @@ class ImprintImage < ApplicationRecord
   attr_accessor :image
 
   def push_image
-    self.image_uri = "cattle/#{cattle.user.id}/#{cattle.id}/#{id}-profile-original"
+    self.image_uri = "cattle/#{cattle.user.id}/#{cattle.id}/#{id}-imprint-original"
     $s3.put_object(
       acl: 'private',
       body: image,
