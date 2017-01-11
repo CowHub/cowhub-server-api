@@ -55,7 +55,7 @@ class Cattle < ActiveRecord::Base
     hash.delete 'latitude'
     hash.delete 'longitude'
     hash[:image_ids] = profile_image.ids
-    hash[:profile_images] = profiles_images
+    hash[:profile_images] = profile_images
     hash[:location] = {
       lat: latitude,
       lng: longitude
