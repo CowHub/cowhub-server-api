@@ -30,7 +30,7 @@ class MatchController < ApplicationController
       response = { pending: false, found: nil, cattle: nil }
       match.with_lock do
         if match.count != -1 && match.results >= match.count
-          response[:found] = match.value != -1
+          response[:found] = match.value != Float::INFINITY
           response[:cattle] = match.cattle if response[:found]
           if match.stored
             $s3.delete_object(
