@@ -1,3 +1,5 @@
+require 'date'
+
 class MatchController < ApplicationController
   before_action :authenticate_request!
 
@@ -29,7 +31,8 @@ class MatchController < ApplicationController
     if match
       response = { pending: false, found: nil, cattle: nil }
       match.with_lock do
-        if match.count != -1 && match.results >= match.count
+        if (match.count != -1 && match.results >= match.count) ||
+           DateTime.now - match.updated_on > 10
           response[:found] = match.value != -1
           response[:cattle] = match.cattle if response[:found]
           if match.stored
