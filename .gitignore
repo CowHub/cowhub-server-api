@@ -30,3 +30,6 @@ npm-debug.log
 
 # Fake volumes
 s3
+
+# SSL files
+ssl
